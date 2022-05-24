@@ -31,11 +31,11 @@ function TeacherDirectory() {
         <div>
         <h2>Teacher Directory</h2> 
         {info.map((teacher) => 
-        <Data birth={teacher.birth} 
-        first={teacher.first} 
-        last={teacher.last} 
-        gender={teacher.gender} 
-        grade={teacher.grade}/>)}
+            <Data birth={teacher.birth} 
+            first={teacher.first} 
+            last={teacher.last} 
+            gender={teacher.gender} 
+            grade={teacher.grade}/>)}
         </div>
     )
 }

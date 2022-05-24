@@ -5,7 +5,6 @@ function Homepage() {
     return (
         <div>
             <Banner />
-
             <button></button>
         </div>
     )
