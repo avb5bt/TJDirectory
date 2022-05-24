@@ -36,7 +36,9 @@ function TeacherDirectory() {
             last={teacher.last} 
             gender={teacher.gender} 
             grade={teacher.grade}/>)}
+        <p>hello, this is a new line</p>
         </div>
+        
     )
 }
 
