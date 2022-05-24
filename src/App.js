@@ -16,6 +16,7 @@ import Banner from './components/banner';
 
 function App() {
   return (
+    //Ana's comment
     <BrowserRouter>
      <main>
        <div className='App'>
