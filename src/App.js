@@ -7,6 +7,7 @@ import teacherDirectory from './components/teacherDirectory';
 import studentDirectory from './components/studentDirectory';
 import classPage from './components/classPage';
 import schoolCalendar from './components/schoolCalendar';
+import Banner from './components/banner';
 
 // add styling to the links 
 function App() {
@@ -15,14 +16,13 @@ function App() {
      <main>
        <div className='App'>
        <nav>
-        <ul>
-          <li><a href="/teacher-directory">Teacher Directory</a></li>
-          <li><a href="/student-directory">Student Directory</a></li>
-          <li><a href="/class-page">Class Page</a></li>
-          <li><a href="/school-calendar">School Calendar</a></li>
-          <li><a href="/teacher-dashboard">Teacher Dashboard</a></li>
-        </ul>
-        </nav>
+         <Banner />
+        <a href="/teacher-directory">Teacher Directory</a> |{" "}
+        <a href="/student-directory">Student Directory</a> |{" "}
+        <a href="/class-page">Class Page</a> |{" "}
+        <a href="/school-calendar">School Calendar</a> |{" "}
+        <a href="/teacher-dashboard">Teacher Dashboard</a> |{" "}
+      </nav>
        <Route exact path="/teacher-directory" component={teacherDirectory} />
        <Route path="/student-directory" component={studentDirectory} />
        <Route path="/class-page" component={classPage} />
