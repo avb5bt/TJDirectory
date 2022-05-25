@@ -62,31 +62,12 @@ function ClassPage() {
         gradeFieldRef.current.value = ""
     }
     
-    // function deletePost({id: birth, first, last, gender, grade}){
-    //     const channelId = useSelector(selectChannelId)
-
-    //     const deleteTeacher = () => {
-    //         return db.collection('channels')
-    //             .doc(channelId)
-    //             .collection('posts')
-    //             .doc(birth)
-    //             .delete()
-    //             .then(
-    //                 ()=>{
-    //                     console.log("teacher removed");
-    //                 },
-    //                 (error) =>{
-    //                     console.error("error removing teacher: ", error);
-    //                 }
-    //             );
-                
-    //     }
-    // }
     return (
       <div>
         <h2>Class Page</h2>
         
         <table>
+            <caption>Class Roster</caption>
           <thead>
             <tr>
               <td> </td>
