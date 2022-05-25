@@ -1,5 +1,4 @@
 import './App.css';
-import Homepage from './components/homepage';
 import { Link, Outlet} from "react-router-dom"
 import Banner from './components/banner';
 

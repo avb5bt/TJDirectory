@@ -3,7 +3,6 @@ import './index.css';
 import App from './App';
 import { render } from "react-dom"
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Homepage from './components/homepage';
 import StudentDirectory from './components/studentDirectory';
 import TeacherDirectory from './components/teacherDirectory';
 import ClassDashboard from './components/classDashboard';
