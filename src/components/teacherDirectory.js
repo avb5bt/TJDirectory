@@ -106,7 +106,7 @@ function TeacherDirectory() {
               <td> </td>
               <th scope="col">First</th>
               <th scope="col">Last</th>
-              <th scope="col">Birthday</th>
+              <th scope="col">Birthdate</th>
               <th scope="col">Gender</th>
               <th scope="col">Grade Level</th>
             </tr>
