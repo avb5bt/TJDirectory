@@ -1,6 +1,6 @@
 import Banner from "./banner"
 
-function classPage() {
+function ClassPage() {
     return (
         <div>
             <h2>Class Page</h2>
@@ -8,4 +8,4 @@ function classPage() {
     )
 }
 
-export default classPage
+export default ClassPage

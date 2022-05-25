@@ -1,7 +1,7 @@
 import {collection, getDocs} from 'firebase/firestore'
 import { db, firebaseConfig } from './firebaseSetup'
 
-function studentDirectory() {
+function StudentDirectory() {
     getDocs(collection(db, "Student"))
     .then((allDocs) => {allDocs.forEach((doc) => console.log(doc.data()))})
     
@@ -10,4 +10,4 @@ function studentDirectory() {
     )
 }
 
-export default studentDirectory
+export default StudentDirectory
