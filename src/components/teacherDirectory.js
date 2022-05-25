@@ -78,31 +78,29 @@ function TeacherDirectory() {
       <div>
         <h2>Teacher Directory</h2>
         <form onSubmit={addTeacher} >
-            <ul>
-                <li>
-                    <label>Birth </label>
-                    <input type="text" ref={birthFieldRef} />
-                </li>
-                <li>
-                    <label>First Name </label>
-                    <input type="text" ref={firstFieldRef} /></li>
-                <li>
-                    <label>Last Name </label>
-                    <input type="text" ref={lastFieldRef} />
-                </li>
-                <li>
-                    <label>Gender </label>
-                    <input type="text" ref={genderFieldRef} />
-                </li>
-                <li>
-                    <label>Grade </label>
-                    <input type="text" ref={gradeFieldRef} />
-                </li>
+            <p>
+                <label>Birthdate </label>
+                <input type="text" ref={birthFieldRef} />
+            </p>     
+            <p>
+                <label>First Name </label>
+                <input type="text" ref={firstFieldRef} />
+            </p>
+            <p>
+                <label>Last Name </label>
+                <input type="text" ref={lastFieldRef} />
+            </p>
+            <p>
+                <label>Gender </label>
+                <input type="text" ref={genderFieldRef} />
+            </p>
+            <p>
+                <label>Grade </label>
+                <input type="text" ref={gradeFieldRef} />
+            </p>
                 <input type="submit"/>
-            </ul>
         </form>
         <table>
-          <caption>Teacher Directory</caption>
           <thead>
             <tr>
               <td> </td>
