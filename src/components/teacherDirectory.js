@@ -1,5 +1,5 @@
 import {collection, getDocs} from 'firebase/firestore'
-import { db, firebaseConfig } from './firebaseSetup'
+import { db } from './firebaseSetup'
 import { useState, useEffect } from "react"
 
 function TeacherDirectory() {
@@ -36,7 +36,6 @@ function TeacherDirectory() {
             last={teacher.last} 
             gender={teacher.gender} 
             grade={teacher.grade}/>)}
-        <p>hello, this is a new line</p>
         </div>
         
     )

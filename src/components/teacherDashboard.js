@@ -1,8 +1,8 @@
-function teacherDashboard() {
+function TeacherDashboard() {
     return (
         <h2>Teacher Dashboard</h2>
     )
 
 }
 
-export default teacherDashboard
+export default TeacherDashboard
