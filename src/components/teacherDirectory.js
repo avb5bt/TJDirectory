@@ -69,11 +69,7 @@ function TeacherDirectory() {
                 <Data property={teacher.grade} />
               ))}
               </td>
-              <td>
-              {info.map((teacher) => (
-                <Data property={teacher.grade} />
-              ))}
-              </td>
+              
             </tr>
           </tbody>
         </table>
