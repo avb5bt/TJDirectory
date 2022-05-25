@@ -16,7 +16,6 @@ function App() {
           <Link to="/student-directory">Student Directory</Link> |{" "}
           <Link to="/class-page">Class Page</Link> |{" "}
           <Link to="/school-calendar">School Calendar</Link> |{" "}
-          <Link to="/teacher-dashboard">Teacher Dashboard</Link> |{" "}
           <Link to='/class-dashboard'>Class Dashboard</Link>
         </nav>
         <Outlet/>
