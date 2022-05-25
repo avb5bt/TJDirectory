@@ -13,11 +13,9 @@ function TeacherDirectory() {
     const Data=(props) => {
         return (
             <div className='teacherDirectory'>
-                <p>{props.birth}</p>
-                <p>{props.first}</p>
-                <p>{props.last}</p>
-                <p>{props.gender}</p>
-                <p>{props.grade}</p>
+            
+                <td>{props.property}</td>
+                
             </div>
         )
     }
@@ -77,8 +75,8 @@ function TeacherDirectory() {
     //     }
     // }
     return (
-        <div>
-        <h2>Teacher Directory</h2> 
+      <div>
+        <h2>Teacher Directory</h2>
         <form onSubmit={addTeacher} >
             <ul>
                 <li>
@@ -103,15 +101,52 @@ function TeacherDirectory() {
                 <input type="submit"/>
             </ul>
         </form>
-        {info.map((teacher) => 
-            <Data birth={teacher.birth} 
-            first={teacher.first} 
-            last={teacher.last} 
-            gender={teacher.gender} 
-            grade={teacher.grade}/>)}
-        </div>
-
-    )
+        <table>
+          <caption>Teacher Directory</caption>
+          <thead>
+            <tr>
+              <td> </td>
+              <th scope="col">First</th>
+              <th scope="col">Last</th>
+              <th scope="col">Birthday</th>
+              <th scope="col">Gender</th>
+              <th scope="col">Grade Level</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"></th>
+              <td>
+              {info.map((teacher) => (
+                <Data property={teacher.first} />
+              ))}
+              </td>
+              <td>
+              {info.map((teacher) => (
+                <Data property={teacher.last} />
+              ))}
+              </td>
+              <td>
+              {info.map((teacher) => (
+                <Data property={teacher.birth} />
+              ))}
+              </td>
+              <td>
+              {info.map((teacher) => (
+                <Data property={teacher.gender} />
+              ))}
+              </td>
+              <td>
+              {info.map((teacher) => (
+                <Data property={teacher.grade} />
+              ))}
+              </td>
+              
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    );
 }
 
 export default TeacherDirectory
