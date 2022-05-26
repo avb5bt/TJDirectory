@@ -18,7 +18,7 @@ function ClassDashboard() {
 
     useEffect(() => {
         const classes = []
-        getDocs(collection(db, "Classes"))
+        getDocs(collection(db, "Teacher"))
         .then((allInfo) => {
             allInfo.forEach((doc) =>
                 classes.push({...doc.data()})
@@ -42,9 +42,9 @@ function ClassDashboard() {
                 ref = {classTeacherRef}
                 >
             {classes.map((classes) => (
-                <MenuItem value = {classes.teacher} onClick = { () => {
-                    setclassTeacher(classes.teacher)
-                }}> {classes.teacher} </MenuItem>
+                <MenuItem value = {classes.last} onClick = { () => {
+                    setclassTeacher(classes.last)
+                }}> {classes.last} </MenuItem>
               ))}
                     
                 </Select>
