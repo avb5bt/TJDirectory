@@ -149,7 +149,7 @@ function TeacherDirectory() {
               Add Teacher
             </Button>
         </form>
-        </div>
+</div>
 
         <div className="directoryColumn">
         <table>
@@ -203,7 +203,6 @@ function TeacherDirectory() {
           </tbody>
         </table>
         </div>
-        
       </div>
     );
 }

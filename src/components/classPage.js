@@ -17,6 +17,11 @@ function ClassPage() {
     const englishGradeRef = useRef(null);
     const [student, setStudent]=useState();
     const [studentID, setStudentID]=useState();
+    const [avgMath, setAvgMath] = useState(0);
+    const [avgEng, setAvgEng] = useState(0);
+    const [avgHist, setAvgHist] = useState(0);
+    const [avgSci, setAvgSci] = useState(0);
+
     
 
 
@@ -42,7 +47,10 @@ function ClassPage() {
                 
             })
         setDisplayInfo(displayInfo)})
-
+            averageMath();
+            averageEng();
+            averageHist();
+            averageSci();
     }, [db])
 
     const getStudent=async(last)=>{
@@ -58,7 +66,52 @@ function ClassPage() {
          setStudent(doc.id);
       });
     }
+    const averageMath = async()=>{
+      let sum = 0;
+      let counter = 0;
+      displayInfo.map((student) => {
+        console.log(student.score.math)
+        sum += student.score.math;
+        counter++;
+      })
+      
+      setAvgMath(parseInt(sum/counter))
 
+    }
+    const averageEng = async()=>{
+      let sum = 0;
+      let counter = 0;
+      displayInfo.map((student) => {
+        sum += student.score.english;
+        counter++;
+      })
+      
+      setAvgEng(parseInt(sum/counter))
+
+    }
+    const averageHist = async()=>{
+      let sum = 0;
+      let counter = 0;
+      displayInfo.map((student) => {
+        sum += student.score.history;
+        counter++;
+      })
+      
+      setAvgHist(parseInt(sum/counter))
+
+    }
+    const averageSci = async()=>{
+      let sum = 0;
+      let counter = 0;
+      displayInfo.map((student) => {
+        sum += student.score.science;
+        counter++;
+      })
+      
+      setAvgSci(parseInt(sum/counter))
+
+    }
+    
     const changeGrade=async(e)=>{
       e.preventDefault();
 
@@ -96,32 +149,9 @@ function ClassPage() {
           setStudentID(doc.id);
       });
       deleteDoc(doc(db, "Student", studentID))
+
     }
-    
-    // const addStudent = (e) => {
-    //     e.preventDefault();
 
-    //     const newGradeInput = {
-    //         birth: birthFieldRef.current.value,
-    //         first: firstFieldRef.current.value,
-    //         last: lastFieldRef.current.value,
-    //         gender: genderFieldRef.current.value,
-    //         grade: gradeFieldRef.current.value,
-
-    //     } 
-    //     addDoc(collection(db, "Student"), newStudent)
-    //     .then((docRef) =>{
-    //         setDisplayInfo([...displayInfo, {id:docRef.id, ...newStudent}])
-    //     })
-    //     .catch((e) => console.error(e))
-
-    //     birthFieldRef.current.value = ""
-    //     firstFieldRef.current.value = ""
-    //     lastFieldRef.current.value = ""
-    //     genderFieldRef.current.value = ""
-    //     gradeFieldRef.current.value = ""
-    // }
-    
 
     return (
       <div>
@@ -225,6 +255,37 @@ function ClassPage() {
             </p>
                 <input type="submit"/>
         </form>
+        <table>
+            <caption>Class Grade Averages
+            </caption>
+        <thead>
+            <tr>
+              <td> </td>
+              <th scope="col">Math</th>
+              <th scope="col">English</th>
+              <th scope="col">History</th>
+              <th scope="col">Science</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"></th>
+              <td>
+              {avgMath}
+              </td>
+              <td>
+              {avgEng}
+              </td>
+              <td>
+              {avgHist}
+              </td>
+              <td>
+              {avgSci}
+              </td>
+              </tr>
+          </tbody>
+        </table>
       </div>
     );
 }
