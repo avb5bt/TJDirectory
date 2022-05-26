@@ -35,7 +35,7 @@ function ClassPage() {
         getDocs(collection(db, "Student"))
         .then((allInfo) => {
             allInfo.forEach((doc) =>{
-                if(doc.data().teacher==="test"){//TODO: change this once we attach a teacher
+                if(doc.data().teacher==="doe"){//TODO: change this once we attach a teacher
                     //console.log("entered");
                     displayInfo.push({...doc.data()})
                 }
@@ -67,7 +67,6 @@ function ClassPage() {
       console.log("2: "+student);
         const batch = writeBatch(db);
         
-        // Update the population of 'SF'
         const sfRef = await doc(db, "Student", student);
         batch.update(sfRef, {
           "score.math": mathGradeRef.current.value,
@@ -137,6 +136,10 @@ function ClassPage() {
               <th scope="col">Birthdate</th>
               <th scope="col">Gender</th>
               <th scope="col">Grade Level</th>
+              <th scope="col">Math</th>
+              <th scope="col">English</th>
+              <th scope="col">History</th>
+              <th scope="col">Science</th>
               <th scope="col"></th>
             </tr>
           </thead>
@@ -166,6 +169,26 @@ function ClassPage() {
               <td>
               {displayInfo.map((student) => (
                 <Data property={student.grade} />
+              ))}
+              </td>
+              <td>
+              {displayInfo.map((student) => (
+                <Data property={student.score.math} />
+              ))}
+              </td>
+              <td>
+              {displayInfo.map((student) => (
+                <Data property={student.score.science} />
+              ))}
+              </td>
+              <td>
+              {displayInfo.map((student) => (
+                <Data property={student.score.history} />
+              ))}
+              </td>
+              <td>
+              {displayInfo.map((student) => (
+                <Data property={student.score.english} />
               ))}
               </td>
               <td>
