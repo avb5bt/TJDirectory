@@ -1,3 +1,10 @@
+import { MenuItem, TextField, Select, FormControl, InputLabel, Button} from '@mui/material';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from '@material-ui/pickers';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
 import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where} from 'firebase/firestore'
 import { db, firebaseConfig } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
@@ -68,11 +75,86 @@ function TeacherDirectory() {
         deleteDoc(doc(db, "Teacher", teacherID))
     }
 
+    const [selectedDate, setSelectedDate] = useState()
+    const handleDateChange=(date) => {
+      setSelectedDate(date)
+    }
+
     return (
       <div>
         <h2>Teacher Directory</h2>
         <form onSubmit={addTeacher} >
+        <p>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                format="MM/dd/yyyy"
+                label="Birthdate"
+                required
+                value={selectedDate}
+                onChange={handleDateChange}
+                inputRef={birthFieldRef}
+                />
+              </MuiPickersUtilsProvider>
+            </p>
             <p>
+              <TextField 
+              required
+              variant='outlined'
+              label="First Name"
+              inputRef={firstFieldRef}/>
+            </p>
+            <p>
+              <TextField 
+                required
+                variant='outlined'
+                label="Last Name"
+                inputRef={lastFieldRef}/>
+            </p>
+            <p>
+              <FormControl required sx={{ m: 0.5, minWidth: 150 }}>
+                <InputLabel id="test-select-label">Gender</InputLabel>
+                <Select
+                  variant='outlined'
+                  labelId="test-select-label"
+                  label="Label"
+                  inputRef={genderFieldRef}>
+                  <MenuItem value={'Female'}>Female</MenuItem>
+                  <MenuItem value={'Male'}>Male</MenuItem>
+                  <MenuItem value={'Prefer not to say'}>Prefer not to say</MenuItem>
+                </Select>
+              </FormControl>
+            </p>
+            <p>
+              <FormControl required sx={{ m: 0.5, minWidth: 150 }}>
+                <InputLabel id="test-select-label">Grade Taught</InputLabel>
+                <Select
+                  variant='outlined'
+                  labelId="test-select-label"
+                  label="Label"
+                  inputRef={gradeFieldRef}>
+                  <MenuItem value={'K'}>Kindergarten</MenuItem>
+                  <MenuItem value={'1st'}>1st</MenuItem>
+                  <MenuItem value={'2nd'}>2nd</MenuItem>
+                  <MenuItem value={'3rd'}>3rd</MenuItem>
+                  <MenuItem value={'4th'}>4th</MenuItem>
+                  <MenuItem value={'5th'}>5th</MenuItem>
+                  <MenuItem value={'6th'}>6th</MenuItem>
+                </Select>
+              </FormControl>
+            </p>
+            <Button
+            type="submit"
+            variant="outlined">
+              Add Student
+            </Button>
+
+
+
+
+
+
+
+            {/* <p>
                 <label>Birthdate </label>
                 <input type="date" ref={birthFieldRef} required/>
             </p>     
@@ -103,8 +185,13 @@ function TeacherDirectory() {
                   <option value="6th">6th</option>
                 </select>
             </p>
-                <input type="submit"/>
+                <input type="submit"/> */}
         </form>
+
+
+
+
+
         <table>
           <thead>
             <tr>
