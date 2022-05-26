@@ -20,9 +20,7 @@ function StudentDirectory() {
     const Data=(props) => {
         return (
             <div className='studentDirectory'>
-            
                 <td>{props.property}</td>
-                
             </div>
         )
     }
@@ -48,8 +46,9 @@ function StudentDirectory() {
             grade: gradeFieldRef.current.value,
 
         } 
+
         addDoc(collection(db, "Student"), newStudent)
-        .then((docRef) =>{
+        .then((docRef) => {
             setInfo([...info, {id:docRef.id, ...newStudent}])
         })
         .catch((e) => console.error(e))
@@ -73,6 +72,7 @@ function StudentDirectory() {
           <p>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker
+              format="MM/dd/yyyy"
               label="Birthdate"
               value={selectedDate}
               onChange={handleDateChange}
@@ -83,26 +83,23 @@ function StudentDirectory() {
           <p>
             <TextField 
             required
-            id='outlined-required'
+            variant='outlined'
             label="First Name"
-            inputRef={firstFieldRef}
-            />
+            inputRef={firstFieldRef}/>
           </p>
           <p>
             <TextField 
               required
-              id='outlined-required'
+              variant='outlined'
               label="Last Name"
-              inputRef={lastFieldRef}
-              />
+              inputRef={lastFieldRef}/>
           </p>
           <p>
             <FormControl required sx={{ m: 0.5, minWidth: 150 }}>
               <InputLabel>Gender</InputLabel>
               <Select
-                id="outlined-required"
-                ref={genderFieldRef}
-              >
+                variant='outlined'
+                inputRef={genderFieldRef}>
                 <MenuItem value={'Female'}>Female</MenuItem>
                 <MenuItem value={'Male'}>Male</MenuItem>
                 <MenuItem value={'Prefer not to say'}>Prefer not to say</MenuItem>
@@ -113,61 +110,20 @@ function StudentDirectory() {
             <FormControl required sx={{ m: 0.5, minWidth: 150 }}>
               <InputLabel>Grade Level</InputLabel>
               <Select
-                ref={gradeFieldRef}
-              >
-                <MenuItem value={'1'}>1st</MenuItem>
-                <MenuItem value={'2'}>2nd</MenuItem>
-                <MenuItem value={'3'}>3rd</MenuItem>
-                <MenuItem value={'4'}>4th</MenuItem>
-                <MenuItem value={'5'}>5th</MenuItem>
-                <MenuItem value={'6'}>6th</MenuItem>
+                variant='outlined'
+                inputRef={gradeFieldRef}>
+                <MenuItem value={'K'}>Kindergarten</MenuItem>
+                <MenuItem value={'1st'}>1st</MenuItem>
+                <MenuItem value={'2nd'}>2nd</MenuItem>
+                <MenuItem value={'3rd'}>3rd</MenuItem>
+                <MenuItem value={'4th'}>4th</MenuItem>
+                <MenuItem value={'5th'}>5th</MenuItem>
+                <MenuItem value={'6th'}>6th</MenuItem>
               </Select>
             </FormControl>
           </p>
             <input type="submit"/>
         </form>
- 
-
-
-
-
-
-
-
-        {/* <form onSubmit={addStudent} >
-            <p>
-                <label>Birthdate </label>
-                <input type="date" ref={birthFieldRef} required/>
-            </p>
-            <p>
-                <label>First Name </label>
-                <input type="text" ref={firstFieldRef} required/>
-            </p>
-            <p>
-                <label>Last Name </label>
-                <input type="text" ref={lastFieldRef} required/>
-            </p>
-            <p>
-              <label>Gender </label>
-                <select ref={genderFieldRef} required>
-                  <option value="Female">Female</option>
-                  <option value="Male">Male</option>
-                  <option value="Prefer not to say">Prefer not to say</option>
-                </select>
-            </p>
-            <p>
-              <label>Grade Level </label>
-                <select ref={gradeFieldRef} required>
-                  <option value="1st">1st</option>
-                  <option value="2nd">2nd</option>
-                  <option value="3rd">3rd</option>
-                  <option value="4th">4th</option>
-                  <option value="5th">5th</option>
-                  <option value="6th">6th</option>
-                </select>
-            </p>
-                <input type="submit"/>
-        </form> */}
 
         <table>
           <thead>
