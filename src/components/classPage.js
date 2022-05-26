@@ -42,6 +42,10 @@ function ClassPage() {
                 
             })
         setDisplayInfo(displayInfo)})
+        
+
+        
+
     }, [db])
 
     const getStudent=async(last)=>{
