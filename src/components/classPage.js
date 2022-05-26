@@ -1,4 +1,4 @@
-import {addDoc, collection, getDocs} from 'firebase/firestore'
+import {addDoc, collection, getDocs, deleteDoc} from 'firebase/firestore'
 import { db } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
 import { query, where } from "firebase/firestore";
@@ -10,12 +10,13 @@ import { writeBatch, doc } from "firebase/firestore";
 
 function ClassPage() {
     const [displayInfo, setDisplayInfo]=useState([]);
-    const birthFieldRef = useRef(null);
-    const firstFieldRef = useRef(null);
     const lastFieldRef = useRef(null);
-    const genderFieldRef = useRef(null);
-    const gradeFieldRef = useRef(null);
+    const mathGradeRef = useRef(null);
+    const scienceGradeRef = useRef(null);
+    const historyGradeRef = useRef(null);
+    const englishGradeRef = useRef(null);
     const [student, setStudent]=useState();
+    const [studentID, setStudentID]=useState();
     
 
 
@@ -34,26 +35,22 @@ function ClassPage() {
         getDocs(collection(db, "Student"))
         .then((allInfo) => {
             allInfo.forEach((doc) =>{
-                if(doc.data().teacher==="test"){//TODO: change this once we attach a teacher
+                if(doc.data().teacher==="doe"){//TODO: change this once we attach a teacher
                     //console.log("entered");
                     displayInfo.push({...doc.data()})
                 }
                 
             })
         setDisplayInfo(displayInfo)})
-        
-        getStudent();
-        changeGrade();
-
-        
 
     }, [db])
 
-    const getStudent=async()=>{
+    const getStudent=async(last)=>{
       // Create a query against the collection.
+      console.log("2a: "+last);
       const studentRef = collection(db, "Student");
 
-      const q =query(studentRef, where("last", "==", "Sand"));
+      const q =query(studentRef, where("last", "==", last));
         
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
@@ -62,46 +59,68 @@ function ClassPage() {
       });
     }
 
-    const changeGrade=async()=>{
-      const batch = writeBatch(db);
-      
-      // Update the population of 'SF'
-      const sfRef = await doc(db, "Student", student);
-      batch.update(sfRef, {
-        "score.math": 98,
-        "score.english": 87,
-        "score.history": 75,
-        "score.science": 97
-      });       
-      await batch.commit()
+    const changeGrade=async(e)=>{
+      e.preventDefault();
 
-      getDocs(collection(db, "Student")).then((allDocs) => {allDocs.forEach((doc) => console.log(doc.data()))});
+      console.log("1: "+lastFieldRef.current.value);
+      getStudent(lastFieldRef.current.value)
+        
+      console.log("2: "+student);
+        const batch = writeBatch(db);
+        
+        const sfRef = await doc(db, "Student", student);
+        batch.update(sfRef, {
+          "score.math": mathGradeRef.current.value,
+          "score.english": englishGradeRef.current.value,
+          "score.history": historyGradeRef.current.value,
+          "score.science": scienceGradeRef.current.value,
+        }); 
+        await batch.commit()
 
+        getDocs(collection(db, "Student")).then((allDocs) => {allDocs.forEach((doc) => console.log(doc.data()))});
+        
+        lastFieldRef.current.value="";
+        mathGradeRef.current.value="";
+        englishGradeRef.current.value="";
+        historyGradeRef.current.value="";
+        scienceGradeRef.current.value="";
     }
-
-    const addStudent = (e) => {
-        e.preventDefault();
-
-        const newStudent = {
-            birth: birthFieldRef.current.value,
-            first: firstFieldRef.current.value,
-            last: lastFieldRef.current.value,
-            gender: genderFieldRef.current.value,
-            grade: gradeFieldRef.current.value,
-
-        } 
-        addDoc(collection(db, "Student"), newStudent)
-        .then((docRef) =>{
-            setDisplayInfo([...displayInfo, {id:docRef.id, ...newStudent}])
-        })
-        .catch((e) => console.error(e))
-
-        birthFieldRef.current.value = ""
-        firstFieldRef.current.value = ""
-        lastFieldRef.current.value = ""
-        genderFieldRef.current.value = ""
-        gradeFieldRef.current.value = ""
+    
+    const deleteStudent = async (e, student) => {
+      e.preventDefault();
+      const studentRef = collection(db, "Student");
+      const q = query(studentRef, where("last", "==", student.last));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+          doc.data();
+          setStudentID(doc.id);
+      });
+      deleteDoc(doc(db, "Student", studentID))
     }
+    
+    // const addStudent = (e) => {
+    //     e.preventDefault();
+
+    //     const newGradeInput = {
+    //         birth: birthFieldRef.current.value,
+    //         first: firstFieldRef.current.value,
+    //         last: lastFieldRef.current.value,
+    //         gender: genderFieldRef.current.value,
+    //         grade: gradeFieldRef.current.value,
+
+    //     } 
+    //     addDoc(collection(db, "Student"), newStudent)
+    //     .then((docRef) =>{
+    //         setDisplayInfo([...displayInfo, {id:docRef.id, ...newStudent}])
+    //     })
+    //     .catch((e) => console.error(e))
+
+    //     birthFieldRef.current.value = ""
+    //     firstFieldRef.current.value = ""
+    //     lastFieldRef.current.value = ""
+    //     genderFieldRef.current.value = ""
+    //     gradeFieldRef.current.value = ""
+    // }
     
 
     return (
@@ -118,6 +137,11 @@ function ClassPage() {
               <th scope="col">Birthdate</th>
               <th scope="col">Gender</th>
               <th scope="col">Grade Level</th>
+              <th scope="col">Math</th>
+              <th scope="col">English</th>
+              <th scope="col">History</th>
+              <th scope="col">Science</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -148,30 +172,56 @@ function ClassPage() {
                 <Data property={student.grade} />
               ))}
               </td>
-              
+              <td>
+              {displayInfo.map((student) => (
+                <Data property={student.score.math} />
+              ))}
+              </td>
+              <td>
+              {displayInfo.map((student) => (
+                <Data property={student.score.science} />
+              ))}
+              </td>
+              <td>
+              {displayInfo.map((student) => (
+                <Data property={student.score.history} />
+              ))}
+              </td>
+              <td>
+              {displayInfo.map((student) => (
+                <Data property={student.score.english} />
+              ))}
+              </td>
+              <td>
+              {displayInfo.map((student) => (
+                <form onSubmit={(e)=>deleteStudent(e, student)} >
+                    <input id="delete" type="submit" name="delete" value="Delete"/>
+               </form>
+              ))}
+              </td> 
             </tr>
           </tbody>
         </table>
-        <form onSubmit={addStudent} >
-            <p>
-                <label>Birthdate </label>
-                <input type="date" ref={birthFieldRef} />
-            </p>
-            <p>
-                <label>First Name </label>
-                <input type="text" ref={firstFieldRef} />
-            </p>
+        <form onSubmit={changeGrade} >
             <p>
                 <label>Last Name </label>
                 <input type="text" ref={lastFieldRef} />
             </p>
             <p>
-                <label> </label>
-                <input type="text" ref={genderFieldRef} />
+                <label>Math Grade</label>
+                <input type="text" ref={mathGradeRef} />
             </p>
             <p>
-                <label>Grade </label>
-                <input type="text" ref={gradeFieldRef} />
+                <label>Science Grade </label>
+                <input type="text" ref={scienceGradeRef} />
+            </p>
+            <p>
+                <label>History Grade</label>
+                <input type="text" ref={historyGradeRef} />
+            </p>
+            <p>
+                <label>English Grade </label>
+                <input type="text" ref={englishGradeRef} />
             </p>
                 <input type="submit"/>
         </form>

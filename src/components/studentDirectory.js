@@ -1,5 +1,5 @@
-import {addDoc, collection, getDocs} from 'firebase/firestore'
-import { db } from './firebaseSetup'
+import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where} from 'firebase/firestore'
+import { db, firebaseConfig } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
 import { MenuItem, TextField, Select, FormControl, InputLabel} from '@mui/material';
 import {
@@ -16,7 +16,13 @@ function StudentDirectory() {
     const lastFieldRef = useRef(null);
     const genderFieldRef = useRef(null);
     const gradeFieldRef = useRef(null);
+    const mathFieldRef = useRef(null);
+    const englishFieldRef = useRef(null);
+    const historyFieldRef = useRef(null);
+    const scienceFieldRef = useRef(null);
+    const teacherFieldRef = useRef(null);
 
+    const [studentID, setStudentID]=useState();
     const Data=(props) => {
         return (
             <div className='studentDirectory'>
@@ -44,6 +50,14 @@ function StudentDirectory() {
             last: lastFieldRef.current.value,
             gender: genderFieldRef.current.value,
             grade: gradeFieldRef.current.value,
+            score: {
+              math: mathFieldRef.current.value,
+              english: englishFieldRef.current.value,
+              history: historyFieldRef.current.value,
+              science: scienceFieldRef.current.value
+            },
+            teacher: teacherFieldRef.current.value
+
 
         } 
 
@@ -57,13 +71,49 @@ function StudentDirectory() {
         firstFieldRef.current.value = ""
         lastFieldRef.current.value = ""
         genderFieldRef.current.value = ""
-        gradeFieldRef.current.value = ""
+        mathFieldRef.current.value = ""
+        englishFieldRef.current.value = ""
+        historyFieldRef.current.value = ""
+        scienceFieldRef.current.value = ""
+        teacherFieldRef.current.value= ""
     }
 
     const [selectedDate, setSelectedDate] = useState()
     const handleDateChange=(date) => {
       setSelectedDate(date)
     }
+
+    const deleteStudent = async (e, student) => {
+        e.preventDefault();
+        const studentRef = collection(db, "Student");
+        const q = query(studentRef, where("last", "==", student.last));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            doc.data();
+            setStudentID(doc.id);
+        });
+        deleteDoc(doc(db, "Student", studentID))
+    }
+    // function deletePost({id: birth, first, last, gender, grade}){
+    //     const channelId = useSelector(selectChannelId)
+
+    //     const deleteTeacher = () => {
+    //         return db.collection('channels')
+    //             .doc(channelId)
+    //             .collection('posts')
+    //             .doc(birth)
+    //             .delete()
+    //             .then(
+    //                 ()=>{
+    //                     console.log("teacher removed");
+    //                 },
+    //                 (error) =>{
+    //                     console.error("error removing teacher: ", error);
+    //                 }
+    //             );
+                
+    //     }
+    // }
     
     return (
       <div>
@@ -134,6 +184,7 @@ function StudentDirectory() {
               <th scope="col">Birthdate</th>
               <th scope="col">Gender</th>
               <th scope="col">Grade Level</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -164,7 +215,18 @@ function StudentDirectory() {
                 <Data property={student.grade} />
               ))}
               </td>
-              
+              <td>
+              {info.map((student) => (
+                <Data property={student.teacher} />
+              ))}
+              </td>
+              <td>
+              {info.map((student) => (
+                <form onSubmit={(e)=>deleteStudent(e, student)} >
+                    <input id="delete" type="submit" name="delete" value="Delete"/>
+               </form>
+              ))}
+              </td> 
             </tr>
           </tbody>
         </table>
