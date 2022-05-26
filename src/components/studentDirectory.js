@@ -8,6 +8,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where} from 'firebase/firestore'
 import { db, firebaseConfig } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
+import '../styling/directory.css'
 
 
 function StudentDirectory() {
@@ -111,107 +112,118 @@ function StudentDirectory() {
   
     
     return (
-      <div>
-        <h2>Student Directory</h2>
-        <form onSubmit={addStudent}>
-          <p>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-              format="MM/dd/yyyy"
-              label="Birthdate"
-              value={selectedDate}
-              onChange={handleDateChange}
-              inputRef={birthFieldRef}
-              />
-            </MuiPickersUtilsProvider>
-          </p>
-          <p>
-            <TextField 
-            required
-            variant='outlined'
-            label="First Name"
-            inputRef={firstFieldRef}/>
-          </p>
-          <p>
-            <TextField 
+      <div className="directory">
+        <div className="directoryColumn">
+          <h2>Student Directory</h2>
+          <form onSubmit={addStudent}>
+            <p>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                format="MM/dd/yyyy"
+                label="Birthdate"
+                required
+                value={selectedDate}
+                onChange={handleDateChange}
+                inputRef={birthFieldRef}
+                />
+              </MuiPickersUtilsProvider>
+            </p>
+            <p>
+              <TextField 
               required
               variant='outlined'
-              label="Last Name"
-              inputRef={lastFieldRef}/>
-          </p>
-          <p>
-            <FormControl required sx={{ m: 0.5, minWidth: 150 }}>
-              <InputLabel>Gender</InputLabel>
-              <Select
+              label="First Name"
+              inputRef={firstFieldRef}/>
+            </p>
+            <p>
+              <TextField 
+                required
                 variant='outlined'
-                inputRef={genderFieldRef}>
-                <MenuItem value={'Female'}>Female</MenuItem>
-                <MenuItem value={'Male'}>Male</MenuItem>
-                <MenuItem value={'Prefer not to say'}>Prefer not to say</MenuItem>
-              </Select>
-            </FormControl>
-          </p>
-          <p>
-            <FormControl required sx={{ m: 0.5, minWidth: 150 }}>
-              <InputLabel>Grade Level</InputLabel>
-              <Select
-                variant='outlined'
-                inputRef={gradeFieldRef}>
-                <MenuItem value={'K'}>Kindergarten</MenuItem>
-                <MenuItem value={'1st'}>1st</MenuItem>
-                <MenuItem value={'2nd'}>2nd</MenuItem>
-                <MenuItem value={'3rd'}>3rd</MenuItem>
-                <MenuItem value={'4th'}>4th</MenuItem>
-                <MenuItem value={'5th'}>5th</MenuItem>
-                <MenuItem value={'6th'}>6th</MenuItem>
-              </Select>
-            </FormControl>
-          </p>
-          <p>
-            <TextField 
-            variant="outlined"
-            label="Math Score"
-            required
-            inputRef={mathFieldRef} />
-            <TextField 
-            variant="outlined"
-            label="English Score"
-            required
-            inputRef={englishFieldRef} />
-          </p>
-          <p>
-            <TextField
-            variant="outlined"
-            label="History Score" 
-            required
-            inputRef={historyFieldRef}/>
-            <TextField
-            variant="outlined"
-            label="Science Score" 
-            required
-            inputRef={scienceFieldRef}/>
-          </p>
-          <p>
-            <FormControl required sx={{ m: 0.5, minWidth: 150 }}>
-              <InputLabel>Teacher</InputLabel>
-              <Select
-                variant='outlined'
-                inputRef={teacherFieldRef}>
+                label="Last Name"
+                inputRef={lastFieldRef}/>
+            </p>
+            <p>
+              <FormControl required sx={{ m: 0.5, minWidth: 150 }}>
+                <InputLabel id="test-select-label">Gender</InputLabel>
+                <Select
+                  variant='outlined'
+                  labelId="test-select-label"
+                  label="Label"
+                  inputRef={genderFieldRef}>
+                  <MenuItem value={'Female'}>Female</MenuItem>
+                  <MenuItem value={'Male'}>Male</MenuItem>
+                  <MenuItem value={'Prefer not to say'}>Prefer not to say</MenuItem>
+                </Select>
+              </FormControl>
+            </p>
+            <p>
+              <FormControl required sx={{ m: 0.5, minWidth: 150 }}>
+                <InputLabel id="test-select-label">Grade Level</InputLabel>
+                <Select
+                  variant='outlined'
+                  labelId="test-select-label"
+                  label="Label"
+                  inputRef={gradeFieldRef}>
+                  <MenuItem value={'K'}>Kindergarten</MenuItem>
+                  <MenuItem value={'1st'}>1st</MenuItem>
+                  <MenuItem value={'2nd'}>2nd</MenuItem>
+                  <MenuItem value={'3rd'}>3rd</MenuItem>
+                  <MenuItem value={'4th'}>4th</MenuItem>
+                  <MenuItem value={'5th'}>5th</MenuItem>
+                  <MenuItem value={'6th'}>6th</MenuItem>
+                </Select>
+              </FormControl>
+            </p>
+            <p>
+              <TextField 
+              variant="outlined"
+              label="Math Score"
+              required
+              inputRef={mathFieldRef} />
+              <TextField 
+              variant="outlined"
+              label="English Score"
+              required
+              inputRef={englishFieldRef} />
+            </p>
+            <p>
+              <TextField
+              variant="outlined"
+              label="History Score" 
+              required
+              inputRef={historyFieldRef}/>
+              <TextField
+              variant="outlined"
+              label="Science Score" 
+              required
+              inputRef={scienceFieldRef}/>
+            </p>
+            <p>
+              <FormControl required sx={{ m: 0.5, minWidth: 150 }}>
+                <InputLabel id="test-select-label">Teacher</InputLabel>
+                <Select
+                  variant='outlined'
+                  labelId="test-select-label"
+                  label="Label"
+                  inputRef={teacherFieldRef}>
 
-                {classes.map((classes) => (
-                  <MenuItem value = {classes.teacher} onClick = { () => {
-                      setclassTeacher(classes.teacher)
-                  }}> {classes.teacher} </MenuItem>))}
-              </Select>
-            </FormControl>
-          </p>
+                  {classes.map((classes) => (
+                    <MenuItem value = {classes.teacher} onClick = { () => {
+                        setclassTeacher(classes.teacher)
+                    }}> {classes.teacher} </MenuItem>))}
+                </Select>
+              </FormControl>
+            </p>
             <Button
             type="submit"
             variant="outlined">
-              Submit
+              Add Student
             </Button>
         </form>
-        <table>
+      </div>
+
+      <div className='directoryColumn'>
+      <table>
           <thead>
             <tr>
               <td> </td>
@@ -220,6 +232,7 @@ function StudentDirectory() {
               <th scope="col">Birthdate</th>
               <th scope="col">Gender</th>
               <th scope="col">Grade Level</th>
+              <th scope="col">Teacher</th>
               <th scope="col"></th>
             </tr>
           </thead>
@@ -266,6 +279,8 @@ function StudentDirectory() {
             </tr>
           </tbody>
         </table>
+      </div>
+        
       </div>
     );
 }

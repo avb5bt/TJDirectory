@@ -1,0 +1,17 @@
+.directory {
+    display: flex;
+}
+
+.directoryColumn {
+    flex: 50%;
+}
+
+table {
+    padding: 5px;
+    border: 1px solid;
+    margin: 30px;
+    border-radius: 10px;
+}
+
+
+
