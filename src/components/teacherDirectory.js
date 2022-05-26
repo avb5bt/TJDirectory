@@ -105,6 +105,7 @@ function TeacherDirectory() {
             </p>
                 <input type="submit"/>
         </form>
+        <div text-align = 'center'>
         <table>
           <caption>Teacher Directory</caption>
           <thead>
@@ -156,6 +157,7 @@ function TeacherDirectory() {
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
     );
 }
