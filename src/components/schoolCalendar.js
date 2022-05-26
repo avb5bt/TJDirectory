@@ -2,6 +2,19 @@ import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where} f
 import { db } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
 import { Timestamp } from 'firebase/firestore'
+import * as React from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+
+
+function createData(date, event, description, staff) {
+  return {date, event, description, staff};
+}
 
 function SchoolCalendar() {
     const [info, setInfo] = useState([])
@@ -10,6 +23,7 @@ function SchoolCalendar() {
     const staff = useRef(null)
     const event = useRef(null)
     const [calendarID, setCalendarID]=useState();
+    const [rows, setRows]=useState([]);
 
     const Data=(props) => {
         return (
@@ -33,9 +47,28 @@ function SchoolCalendar() {
                 return a.date.seconds - b.date.seconds
             })
             setInfo(info)
+            createRows(info);
         
         })}, [db])
 
+
+    const createRows = (info)=>{
+      console.log("info2: "+info);
+      let array=[];
+      info.map((event)=>{
+        array.push(createData(new Date(event.date.seconds * 1000).toDateString(), event.event, 
+        event.descrip, event.staff));
+      })
+      setRows(array);
+      console.log("ARRAY: "+array);
+    //   [
+    //   createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+    //   createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+    //   createData('Eclair', 262, 16.0, 24, 6.0),
+    //   createData('Cupcake', 305, 3.7, 67, 4.3),
+    //   createData('Gingerbread', 356, 16.0, 49, 3.9),
+    // ]
+  }
     const addEvent = (e) => {
         e.preventDefault();
 
@@ -95,51 +128,35 @@ function SchoolCalendar() {
             <input type="submit"/>
         </form>
 
-        <table>
-          <caption>Calendar</caption>
-          <thead>
-            <tr>
-              <td> </td>
-              <th scope="col">Date</th>
-              <th scope='col'>Event</th>
-              <th scope="col">Description</th>
-              <th scope="col">Staff</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row"></th>
-              <td>
-              {info.map((event) => (
-                <Data property={new Date(event.date.seconds * 1000).toDateString()} />
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow className="header">
+                <TableCell>
+                    Date
+                </TableCell>
+                <TableCell align="right">Event</TableCell>
+                <TableCell align="right">Description</TableCell>
+                <TableCell align="right">Staff</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <TableRow
+                  key={row.first}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.date}
+                  </TableCell>
+                  <TableCell align="right">{row.event}</TableCell>
+                  <TableCell align="right">{row.description}</TableCell>
+                  <TableCell align="right">{row.staff}</TableCell>
+                </TableRow>
               ))}
-              </td>
-              <td>
-              {info.map((event) => (
-                <Data property={event.event} />
-              ))}
-              </td>
-              <td>
-              {info.map((event) => (
-                <Data property={event.descrip} />
-              ))}
-              </td>
-              <td>
-              {info.map((event) => (
-                <Data property={event.staff} />
-              ))}
-              </td>
-              <td>
-              {info.map((event) => (
-                <form onSubmit={(e)=>deleteEvent(e, event)} >
-                    <input id="delete" type="submit" name="delete" value="Delete"/>
-               </form>
-              ))}
-              </td> 
-            </tr>
-          </tbody>
-        </table>
+            </TableBody>
+          </Table>
+        </TableContainer>
         </div>
     )
 }
