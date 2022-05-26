@@ -1,6 +1,8 @@
-import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where} from 'firebase/firestore'
-import { db, firebaseConfig } from './firebaseSetup'
+import {addDoc, deleteDoc, collection, doc, getDocs, query, where} from 'firebase/firestore'
+import { db } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
+import { Button } from '@mui/material';
+import { Link } from "react-router-dom"
 
 function StudentDirectory() {
     const [info, setInfo] = useState([])
@@ -34,7 +36,7 @@ function StudentDirectory() {
                 info.push({...doc.data()})
             )
         setInfo(info)})
-    }, [db])
+    })
 
     const addStudent = (e) => {
         e.preventDefault();
@@ -172,6 +174,7 @@ function StudentDirectory() {
               <th scope="col">Birthdate</th>
               <th scope="col">Gender</th>
               <th scope="col">Grade Level</th>
+              
               <th scope="col"></th>
             </tr>
           </thead>
@@ -218,6 +221,8 @@ function StudentDirectory() {
             </tr>
           </tbody>
         </table>
+        <Button component={Link} to="/edit-student" variant="outlined" color="primary">
+          Edit Student Directory</Button>
       </div>
     );
 }

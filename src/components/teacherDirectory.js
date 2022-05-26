@@ -1,7 +1,8 @@
-import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where} from 'firebase/firestore'
-import { db, firebaseConfig } from './firebaseSetup'
+import {addDoc, deleteDoc, collection, doc, getDocs, query, where} from 'firebase/firestore'
+import { db  } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
-
+import { Button } from '@mui/material';
+import { Link } from "react-router-dom"
 function TeacherDirectory() {
     const [info, setInfo] = useState([])
     const birthFieldRef = useRef(null);
@@ -10,7 +11,6 @@ function TeacherDirectory() {
     const genderFieldRef = useRef(null);
     const gradeFieldRef = useRef(null);
     const [teacherID, setTeacherID]=useState();
-
     const Data=(props) => {
         return (
             <div className='teacherDirectory'>
@@ -29,7 +29,7 @@ function TeacherDirectory() {
                 info.push({...doc.data()})
             )
         setInfo(info)})
-    }, [db])
+    })
 
     const addTeacher = (e) => {
         e.preventDefault();
@@ -42,7 +42,7 @@ function TeacherDirectory() {
             grade: gradeFieldRef.current.value,
 
         } 
-        console.log(newTeacher)
+        
         addDoc(collection(db, "Teacher"), newTeacher)
         .then((docRef) =>{
             setInfo([...info, {id:docRef.id, ...newTeacher}])
@@ -105,7 +105,7 @@ function TeacherDirectory() {
             </p>
                 <input type="submit"/>
         </form>
-        <table>
+        <table class="center">
           <caption>Teacher Directory</caption>
           <thead>
             <tr>
@@ -156,6 +156,8 @@ function TeacherDirectory() {
             </tr>
           </tbody>
         </table>
+        <Button component={Link} to="/edit-teacher" variant="outlined" color="primary">
+          Edit Teacher Directory</Button>
       </div>
     );
 }
