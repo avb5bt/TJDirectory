@@ -107,15 +107,14 @@ function TeacherDirectory() {
         </form>
         <div text-align = 'center'>
         <table>
-          <caption>Teacher Directory</caption>
           <thead>
             <tr>
               <td> </td>
-              <th scope="col">First | </th>
-              <th scope="col">Last | </th>
-              <th scope="col">Birthday | </th>
-              <th scope="col">Gender | </th>
-              <th scope="col">Grade Taught | </th>
+              <th scope="col">First  </th>
+              <th scope="col">Last  </th>
+              <th scope="col">Birthday  </th>
+              <th scope="col">Gender  </th>
+              <th scope="col">Grade Taught  </th>
               <th scope="col"></th>
             </tr>
           </thead>
