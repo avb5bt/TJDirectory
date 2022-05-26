@@ -1,6 +1,18 @@
 import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where} from 'firebase/firestore'
 import { db, firebaseConfig } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
+import * as React from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+
+function createData(first, last, birth, gender, grade) {
+  return { first, last, birth, gender, grade };
+}
 
 function TeacherDirectory() {
     const [info, setInfo] = useState([])
@@ -10,6 +22,7 @@ function TeacherDirectory() {
     const genderFieldRef = useRef(null);
     const gradeFieldRef = useRef(null);
     const [teacherID, setTeacherID]=useState();
+    const [rows, setRows]=useState([]);
 
     const Data=(props) => {
         return (
@@ -28,8 +41,28 @@ function TeacherDirectory() {
             allInfo.forEach((doc) =>
                 info.push({...doc.data()})
             )
-        setInfo(info)})
+        setInfo(info)
+        createRows(info);
+      })
     }, [db])
+
+    const createRows = (info)=>{
+      console.log("info2: "+info);
+      let array=[];
+      info.map((student)=>{
+        console.log("attempt: "+student.first);
+        array.push(createData(student.first, student.last, student.birth, student.gender, student.grade));
+      })
+      setRows(array);
+      console.log("ARRAY: "+array);
+    //   [
+    //   createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+    //   createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+    //   createData('Eclair', 262, 16.0, 24, 6.0),
+    //   createData('Cupcake', 305, 3.7, 67, 4.3),
+    //   createData('Gingerbread', 356, 16.0, 49, 3.9),
+    // ]
+  }
 
     const addTeacher = (e) => {
         e.preventDefault();
@@ -106,57 +139,37 @@ function TeacherDirectory() {
                 <input type="submit"/>
         </form>
         <div text-align = 'center'>
-        <table>
-          <caption>Teacher Directory</caption>
-          <thead>
-            <tr>
-              <td> </td>
-              <th scope="col">First | </th>
-              <th scope="col">Last | </th>
-              <th scope="col">Birthday | </th>
-              <th scope="col">Gender | </th>
-              <th scope="col">Grade Taught | </th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row"></th>
-              <td>
-              {info.map((teacher) => (
-                <Data property={teacher.first} />
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow className="header">
+                <TableCell>
+                    First
+                </TableCell>
+                <TableCell align="right">Last</TableCell>
+                <TableCell align="right">Birthday</TableCell>
+                <TableCell align="right">Gender</TableCell>
+                <TableCell align="right">Grade Taught</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <TableRow
+                  key={row.first}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.first}
+                  </TableCell>
+                  <TableCell align="right">{row.last}</TableCell>
+                  <TableCell align="right">{row.birth}</TableCell>
+                  <TableCell align="right">{row.gender}</TableCell>
+                  <TableCell align="right">{row.grade}</TableCell>
+                </TableRow>
               ))}
-              </td>
-              <td>
-              {info.map((teacher) => (
-                <Data property={teacher.last} />
-              ))}
-              </td>
-              <td>
-              {info.map((teacher) => (
-                <Data property={teacher.birth} />
-              ))}
-              </td>
-              <td>
-              {info.map((teacher) => (
-                <Data property={teacher.gender} />
-              ))}
-              </td>
-              <td>
-              {info.map((teacher) => (
-                <Data property={teacher.grade} />
-              ))}
-              </td>
-            <td>
-              {info.map((teacher) => (
-                <form onSubmit={(e)=>deleteTeacher(e, teacher)} >
-                    <input id="delete" type="submit" name="delete" value="Delete"/>
-               </form>
-              ))}
-              </td> 
-            </tr>
-          </tbody>
-        </table>
+            </TableBody>
+          </Table>
+        </TableContainer>
         </div>
       </div>
     );
