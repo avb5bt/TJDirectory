@@ -46,10 +46,10 @@ function StudentDirectory() {
             gender: genderFieldRef.current.value,
             grade: gradeFieldRef.current.value,
             score: {
-              math: mathFieldRef.current.value,
-              english: englishFieldRef.current.value,
-              history: historyFieldRef.current.value,
-              science: scienceFieldRef.current.value
+              math: parseFloat(mathFieldRef.current.value),
+              english: parseFloat(englishFieldRef.current.value),
+              history: parseFloat(historyFieldRef.current.value),
+              science: parseFloat(scienceFieldRef.current.value)
             },
             teacher: teacherFieldRef.current.value
 
@@ -65,10 +65,10 @@ function StudentDirectory() {
         firstFieldRef.current.value = ""
         lastFieldRef.current.value = ""
         genderFieldRef.current.value = ""
-        mathFieldRef.current.value = ""
-        englishFieldRef.current.value = ""
-        historyFieldRef.current.value = ""
-        scienceFieldRef.current.value = ""
+        mathFieldRef.current.value = 0
+        englishFieldRef.current.value = 0
+        historyFieldRef.current.value = 0
+        scienceFieldRef.vurrent.value = 0
         teacherFieldRef.current.value= ""
     }
 
