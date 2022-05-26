@@ -9,6 +9,11 @@ function StudentDirectory() {
     const lastFieldRef = useRef(null);
     const genderFieldRef = useRef(null);
     const gradeFieldRef = useRef(null);
+    const mathFieldRef = useRef(null);
+    const englishFieldRef = useRef(null);
+    const historyFieldRef = useRef(null);
+    const scienceFieldRef = useRef(null);
+    const teacherFieldRef = useRef(null);
 
     const Data=(props) => {
         return (
@@ -39,6 +44,14 @@ function StudentDirectory() {
             last: lastFieldRef.current.value,
             gender: genderFieldRef.current.value,
             grade: gradeFieldRef.current.value,
+            score: {
+              math: mathFieldRef.current.value,
+              english: englishFieldRef.current.value,
+              history: historyFieldRef.current.value,
+              science: scienceFieldRef.current.value
+            },
+            teacher: teacherFieldRef.current.value
+
 
         } 
         addDoc(collection(db, "Student"), newStudent)
@@ -51,7 +64,11 @@ function StudentDirectory() {
         firstFieldRef.current.value = ""
         lastFieldRef.current.value = ""
         genderFieldRef.current.value = ""
-        gradeFieldRef.current.value = ""
+        mathFieldRef.current.value = ""
+        englishFieldRef.current.value = ""
+        historyFieldRef.current.value = ""
+        scienceFieldRef.current.value = ""
+        teacherFieldRef.current.value= ""
     }
     
     return (
@@ -81,6 +98,7 @@ function StudentDirectory() {
             <p>
               <label>Grade Level </label>
                 <select ref={gradeFieldRef} required>
+                  <option value="K">K</option>
                   <option value="1st">1st</option>
                   <option value="2nd">2nd</option>
                   <option value="3rd">3rd</option>
@@ -89,6 +107,27 @@ function StudentDirectory() {
                   <option value="6th">6th</option>
                 </select>
             </p>
+            <p>
+                <label>Teacher </label>
+                <input type="text" ref={teacherFieldRef} required/>
+            </p>
+            <p>
+                <label>Math Grade </label>
+                <input type="number" ref={mathFieldRef} required/>
+            </p>
+            <p>
+                <label>English Grade </label>
+                <input type="number" ref={englishFieldRef} required/>
+            </p>
+            <p>
+                <label>History Grade </label>
+                <input type="number" ref={historyFieldRef} required/>
+            </p>
+            <p>
+                <label>Science Grade </label>
+                <input type="number" ref={scienceFieldRef} required/>
+            </p>
+            
                 <input type="submit"/>
         </form>
         <table>
@@ -128,6 +167,11 @@ function StudentDirectory() {
               <td>
               {info.map((student) => (
                 <Data property={student.grade} />
+              ))}
+              </td>
+              <td>
+              {info.map((student) => (
+                <Data property={student.teacher} />
               ))}
               </td>
               
