@@ -42,10 +42,6 @@ function ClassPage() {
                 
             })
         setDisplayInfo(displayInfo)})
-        
-
-        
-
     }, [db])
 
     const getStudent=async(last)=>{
@@ -101,6 +97,7 @@ function ClassPage() {
       });
       deleteDoc(doc(db, "Student", studentID))
     }
+    
     // const addStudent = (e) => {
     //     e.preventDefault();
 

@@ -85,6 +85,7 @@ function StudentDirectory() {
                 
     //     }
     // }
+    
     return (
       <div>
         <h2>Student Directory</h2>
