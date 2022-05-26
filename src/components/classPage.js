@@ -1,4 +1,4 @@
-import {addDoc, collection, getDocs} from 'firebase/firestore'
+import {addDoc, collection, getDocs, deleteDoc} from 'firebase/firestore'
 import { db } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
 import { query, where } from "firebase/firestore";
@@ -16,6 +16,7 @@ function ClassPage() {
     const historyGradeRef = useRef(null);
     const englishGradeRef = useRef(null);
     const [student, setStudent]=useState();
+    const [studentID, setStudentID]=useState();
     
 
 
@@ -41,9 +42,6 @@ function ClassPage() {
                 
             })
         setDisplayInfo(displayInfo)})
-        
-
-        
 
     }, [db])
 
@@ -88,7 +86,19 @@ function ClassPage() {
         historyGradeRef.current.value="";
         scienceGradeRef.current.value="";
     }
-
+    
+    const deleteStudent = async (e, student) => {
+      e.preventDefault();
+      const studentRef = collection(db, "Student");
+      const q = query(studentRef, where("last", "==", student.last));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+          doc.data();
+          setStudentID(doc.id);
+      });
+      deleteDoc(doc(db, "Student", studentID))
+    }
+    
     // const addStudent = (e) => {
     //     e.preventDefault();
 
@@ -128,6 +138,7 @@ function ClassPage() {
               <th scope="col">Birthdate</th>
               <th scope="col">Gender</th>
               <th scope="col">Grade Level</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -158,7 +169,13 @@ function ClassPage() {
                 <Data property={student.grade} />
               ))}
               </td>
-              
+              <td>
+              {displayInfo.map((student) => (
+                <form onSubmit={(e)=>deleteStudent(e, student)} >
+                    <input id="delete" type="submit" name="delete" value="Delete"/>
+               </form>
+              ))}
+              </td> 
             </tr>
           </tbody>
         </table>
