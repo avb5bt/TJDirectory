@@ -1,6 +1,9 @@
 import {addDoc, collection, getDocs} from 'firebase/firestore'
 import { db } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
+import { query, where } from "firebase/firestore";
+import { writeBatch, doc } from "firebase/firestore"; 
+
 // includes average class grade and roster
 // teacher adds grades in the class page 
 // update the teacher field for the student if the teacher is deleted 
@@ -12,6 +15,9 @@ function ClassPage() {
     const lastFieldRef = useRef(null);
     const genderFieldRef = useRef(null);
     const gradeFieldRef = useRef(null);
+    const [student, setStudent]=useState();
+    
+
 
     const Data=(props) => {
         return (
@@ -35,7 +41,43 @@ function ClassPage() {
                 
             })
         setDisplayInfo(displayInfo)})
+        
+        getStudent();
+        changeGrade();
+
+        
+
     }, [db])
+
+    const getStudent=async()=>{
+      // Create a query against the collection.
+      const studentRef = collection(db, "Student");
+
+      const q =query(studentRef, where("last", "==", "Sand"));
+        
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+         doc.data();
+         setStudent(doc.id);
+      });
+    }
+
+    const changeGrade=async()=>{
+      const batch = writeBatch(db);
+      
+      // Update the population of 'SF'
+      const sfRef = await doc(db, "Student", student);
+      batch.update(sfRef, {
+        "score.math": 98,
+        "score.english": 87,
+        "score.history": 75,
+        "score.science": 97
+      });       
+      await batch.commit()
+
+      getDocs(collection(db, "Student")).then((allDocs) => {allDocs.forEach((doc) => console.log(doc.data()))});
+
+    }
 
     const addStudent = (e) => {
         e.preventDefault();
@@ -124,7 +166,7 @@ function ClassPage() {
                 <input type="text" ref={lastFieldRef} />
             </p>
             <p>
-                <label>Gender </label>
+                <label> </label>
                 <input type="text" ref={genderFieldRef} />
             </p>
             <p>

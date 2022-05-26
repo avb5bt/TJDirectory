@@ -2,6 +2,7 @@ import './App.css';
 import { Link, Outlet} from "react-router-dom"
 import Banner from './components/banner';
 import { Button } from '@mui/material';
+
 // add styling to the links 
 // embed the links differently 
 // access class page/teacher dashboard through class dashboard 
