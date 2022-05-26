@@ -1,7 +1,7 @@
 import './App.css';
 import { Link, Outlet} from "react-router-dom"
 import Banner from './components/banner';
-
+import { Button } from '@mui/material';
 // add styling to the links 
 // embed the links differently 
 // access class page/teacher dashboard through class dashboard 
@@ -9,14 +9,19 @@ import Banner from './components/banner';
 function App() {
   return (
        <div className='App'>
-        <nav>
-          <Banner />
-          <Link to="/teacher-directory">Teacher Directory</Link> |{" "}
-          <Link to="/student-directory">Student Directory</Link> |{" "}
-          <Link to="/class-page">Class Page</Link> |{" "}
-          <Link to="/school-calendar">School Calendar</Link> |{" "}
-          <Link to='/class-dashboard'>Class Dashboard</Link>
-        </nav>
+         <Banner/>
+<Button component={Link} to="/teacher-directory" variant="outlined" color="primary">
+          Teacher Directory</Button>
+          <Button component={Link} to="/student-directory" variant="outlined" color="primary">
+          Student Directory</Button>
+          <Button component={Link} to="/class-page" variant="outlined" color="primary">
+          Class Page</Button>
+          <Button component={Link} to="/school-calendar" variant="outlined" color="primary">
+          School Calendar</Button>
+          <Button component={Link} to="/class-dashboard" variant="outlined" color="primary">
+          Class Dashboard</Button>
+
+
         <Outlet/>
       </div>
    );
