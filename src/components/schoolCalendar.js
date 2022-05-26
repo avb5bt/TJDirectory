@@ -1,4 +1,4 @@
-import {addDoc, collection, getDocs} from 'firebase/firestore'
+import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where} from 'firebase/firestore'
 import { db } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
 import { Timestamp } from 'firebase/firestore'
@@ -9,6 +9,7 @@ function SchoolCalendar() {
     const desc = useRef(null)
     const staff = useRef(null)
     const event = useRef(null)
+    const [calendarID, setCalendarID]=useState();
 
     const Data=(props) => {
         return (
@@ -61,7 +62,17 @@ function SchoolCalendar() {
         staff.current.value = null
     }
 
-
+    const deleteEvent = async (e, event) => {
+      e.preventDefault();
+      const eventRef = collection(db, "Events");
+      const q = query(eventRef, where("descrip", "==", event.descrip));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+          doc.data();
+          setCalendarID(doc.id);
+      });
+      deleteDoc(doc(db, "Events", calendarID))
+  }
     return (
         <div>
         <h2>School Calendar</h2>
@@ -94,6 +105,7 @@ function SchoolCalendar() {
               <th scope='col'>Event</th>
               <th scope="col">Description</th>
               <th scope="col">Staff</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -119,6 +131,13 @@ function SchoolCalendar() {
                 <Data property={event.staff} />
               ))}
               </td>
+              <td>
+              {info.map((event) => (
+                <form onSubmit={(e)=>deleteEvent(e, event)} >
+                    <input id="delete" type="submit" name="delete" value="Delete"/>
+               </form>
+              ))}
+              </td> 
             </tr>
           </tbody>
         </table>
