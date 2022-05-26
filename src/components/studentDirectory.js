@@ -54,49 +54,40 @@ function StudentDirectory() {
         gradeFieldRef.current.value = ""
     }
     
-    // function deletePost({id: birth, first, last, gender, grade}){
-    //     const channelId = useSelector(selectChannelId)
-
-    //     const deleteTeacher = () => {
-    //         return db.collection('channels')
-    //             .doc(channelId)
-    //             .collection('posts')
-    //             .doc(birth)
-    //             .delete()
-    //             .then(
-    //                 ()=>{
-    //                     console.log("teacher removed");
-    //                 },
-    //                 (error) =>{
-    //                     console.error("error removing teacher: ", error);
-    //                 }
-    //             );
-                
-    //     }
-    // }
     return (
       <div>
         <h2>Student Directory</h2>
         <form onSubmit={addStudent} >
             <p>
                 <label>Birthdate </label>
-                <input type="text" ref={birthFieldRef} />
+                <input type="date" ref={birthFieldRef} required/>
             </p>
             <p>
                 <label>First Name </label>
-                <input type="text" ref={firstFieldRef} />
+                <input type="text" ref={firstFieldRef} required/>
             </p>
             <p>
                 <label>Last Name </label>
-                <input type="text" ref={lastFieldRef} />
+                <input type="text" ref={lastFieldRef} required/>
             </p>
             <p>
-                <label>Gender </label>
-                <input type="text" ref={genderFieldRef} />
+              <label>Gender </label>
+                <select ref={genderFieldRef} required>
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Prefer not to say">Prefer not to say</option>
+                </select>
             </p>
             <p>
-                <label>Grade </label>
-                <input type="text" ref={gradeFieldRef} />
+              <label>Grade Level </label>
+                <select ref={gradeFieldRef} required>
+                  <option value="1st">1st</option>
+                  <option value="2nd">2nd</option>
+                  <option value="3rd">3rd</option>
+                  <option value="4th">4th</option>
+                  <option value="5th">5th</option>
+                  <option value="6th">6th</option>
+                </select>
             </p>
                 <input type="submit"/>
         </form>

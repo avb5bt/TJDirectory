@@ -28,7 +28,6 @@ function ClassPage() {
         getDocs(collection(db, "Student"))
         .then((allInfo) => {
             allInfo.forEach((doc) =>{
-                //console.log( doc.data().teacher);
                 if(doc.data().teacher==="test"){//TODO: change this once we attach a teacher
                     //console.log("entered");
                     displayInfo.push({...doc.data()})
@@ -62,6 +61,7 @@ function ClassPage() {
         gradeFieldRef.current.value = ""
     }
     
+
     return (
       <div>
         <h2>Class Page</h2>
@@ -113,7 +113,7 @@ function ClassPage() {
         <form onSubmit={addStudent} >
             <p>
                 <label>Birthdate </label>
-                <input type="text" ref={birthFieldRef} />
+                <input type="date" ref={birthFieldRef} />
             </p>
             <p>
                 <label>First Name </label>
