@@ -2,7 +2,7 @@
     display: flex;
 }
 
-.studentDirectory {
+.directoryColumn {
     flex: 50%;
 }
 
@@ -13,8 +13,5 @@ table {
     border-radius: 10px;
 }
 
-tbody {
-    border: 1px solid;
-}
 
 

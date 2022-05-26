@@ -113,7 +113,7 @@ function StudentDirectory() {
     
     return (
       <div className="directory">
-        <div className="studentDirectory">
+        <div className="directoryColumn">
           <h2>Student Directory</h2>
           <form onSubmit={addStudent}>
             <p>
@@ -222,7 +222,7 @@ function StudentDirectory() {
         </form>
       </div>
 
-      <div className='studentDirectory'>
+      <div className='directoryColumn'>
       <table>
           <thead>
             <tr>
@@ -232,6 +232,7 @@ function StudentDirectory() {
               <th scope="col">Birthdate</th>
               <th scope="col">Gender</th>
               <th scope="col">Grade Level</th>
+              <th scope="col">Teacher</th>
               <th scope="col"></th>
             </tr>
           </thead>
