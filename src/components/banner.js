@@ -1,6 +1,6 @@
 function Banner() {
     return(
-        <h1>Thomas Jefferson Elementary Dashboard</h1>
+        <div className="header">Thomas Jefferson Elementary Dashboard</div>
     )
 }
 

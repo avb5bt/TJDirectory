@@ -1,5 +1,5 @@
-import {addDoc, collection, getDocs} from 'firebase/firestore'
-import { db } from './firebaseSetup'
+import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where} from 'firebase/firestore'
+import { db, firebaseConfig } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
 
 function TeacherDirectory() {
@@ -9,6 +9,7 @@ function TeacherDirectory() {
     const lastFieldRef = useRef(null);
     const genderFieldRef = useRef(null);
     const gradeFieldRef = useRef(null);
+    const [teacherID, setTeacherID]=useState();
 
     const Data=(props) => {
         return (
@@ -41,6 +42,7 @@ function TeacherDirectory() {
             grade: gradeFieldRef.current.value,
 
         } 
+        console.log(newTeacher)
         addDoc(collection(db, "Teacher"), newTeacher)
         .then((docRef) =>{
             setInfo([...info, {id:docRef.id, ...newTeacher}])
@@ -54,26 +56,18 @@ function TeacherDirectory() {
         gradeFieldRef.current.value = ""
     }
     
-    // function deletePost({id: birth, first, last, gender, grade}){
-    //     const channelId = useSelector(selectChannelId)
+    const deleteTeacher = async (e, teacher) => {
+        e.preventDefault();
+        const teacherRef = collection(db, "Teacher");
+        const q = query(teacherRef, where("last", "==", teacher.last));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            doc.data();
+            setTeacherID(doc.id);
+        });
+        deleteDoc(doc(db, "Teacher", teacherID))
+    }
 
-    //     const deleteTeacher = () => {
-    //         return db.collection('channels')
-    //             .doc(channelId)
-    //             .collection('posts')
-    //             .doc(birth)
-    //             .delete()
-    //             .then(
-    //                 ()=>{
-    //                     console.log("teacher removed");
-    //                 },
-    //                 (error) =>{
-    //                     console.error("error removing teacher: ", error);
-    //                 }
-    //             );
-                
-    //     }
-    // }
     return (
       <div>
         <h2>Teacher Directory</h2>
@@ -106,11 +100,12 @@ function TeacherDirectory() {
           <thead>
             <tr>
               <td> </td>
-              <th scope="col">First</th>
-              <th scope="col">Last</th>
-              <th scope="col">Birthday</th>
-              <th scope="col">Gender</th>
-              <th scope="col">Grade Level</th>
+              <th scope="col">First | </th>
+              <th scope="col">Last | </th>
+              <th scope="col">Birthday | </th>
+              <th scope="col">Gender | </th>
+              <th scope="col">Grade Level | </th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -141,7 +136,13 @@ function TeacherDirectory() {
                 <Data property={teacher.grade} />
               ))}
               </td>
-              
+            <td>
+              {info.map((teacher) => (
+                <form onSubmit={(e)=>deleteTeacher(e, teacher)} >
+                    <input id="delete" type="submit" name="delete" value="Delete"/>
+               </form>
+              ))}
+              </td> 
             </tr>
           </tbody>
         </table>
