@@ -154,6 +154,14 @@ function ClassPage() {
         </table>
         <form onSubmit={addStudent} >
             <p>
+                <label>Birthdate </label>
+                <input type="date" ref={birthFieldRef} />
+            </p>
+            <p>
+                <label>First Name </label>
+                <input type="text" ref={firstFieldRef} />
+            </p>
+            <p>
                 <label>Last Name </label>
                 <input type="text" ref={lastFieldRef} />
             </p>

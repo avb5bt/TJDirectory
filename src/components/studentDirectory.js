@@ -80,7 +80,7 @@ function StudentDirectory() {
         <form onSubmit={addStudent} >
             <p>
                 <label>Birthdate </label>
-                <input type="text" ref={birthFieldRef} />
+                <input type="date" ref={birthFieldRef} />
             </p>
             <p>
                 <label>First Name </label>
