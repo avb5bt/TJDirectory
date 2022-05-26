@@ -1,5 +1,5 @@
-import {addDoc, collection, getDocs} from 'firebase/firestore'
-import { db } from './firebaseSetup'
+import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where} from 'firebase/firestore'
+import { db, firebaseConfig } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
 
 function StudentDirectory() {
@@ -15,6 +15,7 @@ function StudentDirectory() {
     const scienceFieldRef = useRef(null);
     const teacherFieldRef = useRef(null);
 
+    const [studentID, setStudentID]=useState();
     const Data=(props) => {
         return (
             <div className='studentDirectory'>
@@ -70,6 +71,39 @@ function StudentDirectory() {
         scienceFieldRef.current.value = ""
         teacherFieldRef.current.value= ""
     }
+
+
+    const deleteStudent = async (e, student) => {
+        e.preventDefault();
+        const studentRef = collection(db, "Student");
+        const q = query(studentRef, where("last", "==", student.last));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            doc.data();
+            setStudentID(doc.id);
+        });
+        deleteDoc(doc(db, "Student", studentID))
+    }
+    // function deletePost({id: birth, first, last, gender, grade}){
+    //     const channelId = useSelector(selectChannelId)
+
+    //     const deleteTeacher = () => {
+    //         return db.collection('channels')
+    //             .doc(channelId)
+    //             .collection('posts')
+    //             .doc(birth)
+    //             .delete()
+    //             .then(
+    //                 ()=>{
+    //                     console.log("teacher removed");
+    //                 },
+    //                 (error) =>{
+    //                     console.error("error removing teacher: ", error);
+    //                 }
+    //             );
+                
+    //     }
+    // }
     
     return (
       <div>
@@ -139,6 +173,7 @@ function StudentDirectory() {
               <th scope="col">Birthdate</th>
               <th scope="col">Gender</th>
               <th scope="col">Grade Level</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -174,7 +209,13 @@ function StudentDirectory() {
                 <Data property={student.teacher} />
               ))}
               </td>
-              
+              <td>
+              {info.map((student) => (
+                <form onSubmit={(e)=>deleteStudent(e, student)} >
+                    <input id="delete" type="submit" name="delete" value="Delete"/>
+               </form>
+              ))}
+              </td> 
             </tr>
           </tbody>
         </table>
