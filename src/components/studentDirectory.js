@@ -1,13 +1,14 @@
-import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where} from 'firebase/firestore'
-import { db, firebaseConfig } from './firebaseSetup'
-import { useState, useEffect, useRef} from "react"
-import { MenuItem, TextField, Select, FormControl, InputLabel} from '@mui/material';
+import { MenuItem, TextField, Select, FormControl, InputLabel, Button} from '@mui/material';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from '@material-ui/pickers';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
+import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where} from 'firebase/firestore'
+import { db, firebaseConfig } from './firebaseSetup'
+import { useState, useEffect, useRef} from "react"
+
 
 function StudentDirectory() {
     const [info, setInfo] = useState([])
@@ -21,8 +22,10 @@ function StudentDirectory() {
     const historyFieldRef = useRef(null);
     const scienceFieldRef = useRef(null);
     const teacherFieldRef = useRef(null);
-
+    const [classes, setClasses] = useState([])
+    const [classTeacher, setclassTeacher] = useState('')
     const [studentID, setStudentID]=useState();
+
     const Data=(props) => {
         return (
             <div className='studentDirectory'>
@@ -57,9 +60,9 @@ function StudentDirectory() {
               science: scienceFieldRef.current.value
             },
             teacher: teacherFieldRef.current.value
-
-
         } 
+
+        console.log(newStudent)
 
         addDoc(collection(db, "Student"), newStudent)
         .then((docRef) => {
@@ -94,26 +97,18 @@ function StudentDirectory() {
         });
         deleteDoc(doc(db, "Student", studentID))
     }
-    // function deletePost({id: birth, first, last, gender, grade}){
-    //     const channelId = useSelector(selectChannelId)
 
-    //     const deleteTeacher = () => {
-    //         return db.collection('channels')
-    //             .doc(channelId)
-    //             .collection('posts')
-    //             .doc(birth)
-    //             .delete()
-    //             .then(
-    //                 ()=>{
-    //                     console.log("teacher removed");
-    //                 },
-    //                 (error) =>{
-    //                     console.error("error removing teacher: ", error);
-    //                 }
-    //             );
-                
-    //     }
-    // }
+      useEffect(() => {
+          const classes = []
+          getDocs(collection(db, "Classes"))
+          .then((allInfo) => {
+              allInfo.forEach((doc) =>
+                  classes.push({...doc.data()})
+              )
+          setClasses(classes)
+          console.log(classes)})
+      }, [db])
+  
     
     return (
       <div>
@@ -172,9 +167,50 @@ function StudentDirectory() {
               </Select>
             </FormControl>
           </p>
-            <input type="submit"/>
-        </form>
+          <p>
+            <TextField 
+            variant="outlined"
+            label="Math Score"
+            required
+            inputRef={mathFieldRef} />
+            <TextField 
+            variant="outlined"
+            label="English Score"
+            required
+            inputRef={englishFieldRef} />
+          </p>
+          <p>
+            <TextField
+            variant="outlined"
+            label="History Score" 
+            required
+            inputRef={historyFieldRef}/>
+            <TextField
+            variant="outlined"
+            label="Science Score" 
+            required
+            inputRef={scienceFieldRef}/>
+          </p>
+          <p>
+            <FormControl required sx={{ m: 0.5, minWidth: 150 }}>
+              <InputLabel>Teacher</InputLabel>
+              <Select
+                variant='outlined'
+                inputRef={teacherFieldRef}>
 
+                {classes.map((classes) => (
+                  <MenuItem value = {classes.teacher} onClick = { () => {
+                      setclassTeacher(classes.teacher)
+                  }}> {classes.teacher} </MenuItem>))}
+              </Select>
+            </FormControl>
+          </p>
+            <Button
+            type="submit"
+            variant="outlined">
+              Submit
+            </Button>
+        </form>
         <table>
           <thead>
             <tr>
@@ -234,4 +270,4 @@ function StudentDirectory() {
     );
 }
 
-export default StudentDirectory
+export default StudentDirectory 
