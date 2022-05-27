@@ -11,17 +11,6 @@ import { db } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
 import { Timestamp } from 'firebase/firestore'
 import * as React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-
-
-
-
 import '../styling/calendar.css'
 
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -104,49 +93,8 @@ function SchoolCalendar() {
     }
 
     return (
-        <div className='schoolCalendar'>
-        <h2>School Calendar</h2>
-        <form onSubmit={addEvent} >
-            <p>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                format="MM/dd/yyyy"
-                label="Birthdate"
-                required
-                value={selectedDate}
-                onChange={handleDateChange}
-                inputRef={date}
-                />
-              </MuiPickersUtilsProvider>
-            </p>
-            <p>
-              <TextField 
-              required
-              variant='outlined'
-              label="Event"
-              inputRef={event}/>
-            </p>
-            <p>
-              <TextField 
-                required
-                variant='outlined'
-                label="Description"
-                inputRef={desc}/>
-            </p>
-            <p>
-              <TextField 
-              required
-              variant='outlined'
-              label="Staff"
-              inputRef={staff}/>
-            </p>
-            <Button
-                type="submit"
-                variant="outlined">
-                Add Event
-            </Button>
-            </form>
-            
+      <div className='schoolCalendar'>
+        <h1>School Calendar</h1>
         <table className='calendarTable'>
           <caption>Calendar</caption>
           <thead>
@@ -188,13 +136,56 @@ function SchoolCalendar() {
               <IconButton size='small' onClick={(e) => deleteEvent(e, event)} aria-label="delete">
               <DeleteIcon />
             </IconButton>
-            </Stack>
-               
-              ))}
+            </Stack>))}
               </td> 
             </tr>
           </tbody>
         </table>
+
+        <h2>Add Event</h2>
+        <div className="eventForm">
+        <form onSubmit={addEvent}>
+            <p>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                format="MM/dd/yyyy"
+                label="Birthdate"
+                required
+                value={selectedDate}
+                onChange={handleDateChange}
+                inputRef={date}
+                />
+              </MuiPickersUtilsProvider>
+            </p>
+            <p>
+              <TextField 
+              required
+              variant='outlined'
+              label="Event"
+              inputRef={event}/>
+            </p>
+            <p>
+              <TextField 
+                required
+                variant='outlined'
+                label="Description"
+                inputRef={desc}/>
+            </p>
+            <p>
+              <TextField 
+              required
+              variant='outlined'
+              label="Staff"
+              inputRef={staff}/>
+            </p>
+            <Button
+                className="eventForm"
+                type="submit"
+                variant="outlined">
+                Add Event
+            </Button>
+            </form>
+            </div>
         </div>
     )
 }
