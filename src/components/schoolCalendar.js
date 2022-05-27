@@ -1,7 +1,17 @@
+import { MenuItem, TextField, Select, FormControl, InputLabel, Button} from '@mui/material';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from '@material-ui/pickers';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+
 import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where} from 'firebase/firestore'
 import { db } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
 import { Timestamp } from 'firebase/firestore'
+
+import '../styling/calendar.css'
 
 function SchoolCalendar() {
     const [info, setInfo] = useState([])
@@ -14,13 +24,10 @@ function SchoolCalendar() {
     const Data=(props) => {
         return (
             <div className='CalendarEvent'>
-            
                 <td>{props.property}</td>
-                
             </div>
         )
     }
-
 
     useEffect(() => {
         const info = []
@@ -71,30 +78,57 @@ function SchoolCalendar() {
           setCalendarID(doc.id);
       });
       deleteDoc(doc(db, "Events", calendarID))
-  }
+    }
+
+    const [selectedDate, setSelectedDate] = useState()
+    const handleDateChange=(date) => {
+        setSelectedDate(date)
+    }
+
     return (
         <div>
         <h2>School Calendar</h2>
         <form onSubmit={addEvent} >
             <p>
-                <label>Date </label>
-                <input type="date" ref={date} />
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                format="MM/dd/yyyy"
+                label="Birthdate"
+                required
+                value={selectedDate}
+                onChange={handleDateChange}
+                inputRef={date}
+                />
+              </MuiPickersUtilsProvider>
             </p>
             <p>
-                <label>Event </label>
-                <input type="text" ref={event} />
+              <TextField 
+              required
+              variant='outlined'
+              label="Event"
+              inputRef={event}/>
             </p>
             <p>
-                <label>Description </label>
-                <input type="text" ref={desc} /></p>
-            <p>
-                <label>Staff </label>
-                <input type="text" ref={staff} />
+              <TextField 
+                required
+                variant='outlined'
+                label="Description"
+                inputRef={desc}/>
             </p>
+            <p>
+              <TextField 
+              required
+              variant='outlined'
+              label="Staff"
+              inputRef={staff}/>
+            </p>
+            <Button
+                type="submit"
+                variant="outlined">
+                Add Teacher
+            </Button>
+            </form>
             
-            <input type="submit"/>
-        </form>
-
         <table>
           <caption>Calendar</caption>
           <thead>

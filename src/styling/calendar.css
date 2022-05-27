@@ -1,0 +1,19 @@
+table {
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+}
+
+thead th {
+    width: auto;
+}
+
+tr {
+    text-align: center;
+}
+
+caption {
+    margin-top: 10px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: larger;
+}
