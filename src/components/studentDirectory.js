@@ -10,6 +10,9 @@ import { db, firebaseConfig } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
 import '../styling/directory.css'
 import { Link } from "react-router-dom"
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import { Stack } from '@mui/material';
 
 
 function StudentDirectory() {
@@ -98,6 +101,7 @@ function StudentDirectory() {
             setStudentID(doc.id);
         });
         deleteDoc(doc(db, "Student", studentID))
+        window.location.reload(false)
     }
 
     useEffect(() => {
@@ -273,9 +277,14 @@ function StudentDirectory() {
               </td>
               <td>
               {info.map((student) => (
-                <form onSubmit={(e)=>deleteStudent(e, student)} >
-                    <input id="delete" type="submit" name="delete" value="Delete"/>
-               </form>
+              //   <form onSubmit={(e)=>deleteStudent(e, student)} >
+              //       <input id="delete" type="submit" name="delete" value="Delete"/>
+              //  </form>
+              <Stack direction = 'column' spacing ={1}>
+              <IconButton size='small' onClick={(e) => deleteStudent(e, student)} aria-label="delete">
+              <DeleteIcon />
+            </IconButton>
+            </Stack>
               ))}
               </td> 
             </tr>
