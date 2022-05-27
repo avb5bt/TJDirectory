@@ -5,7 +5,7 @@ import { useState, useEffect, useRef} from "react"
 import { FormControl, InputLabel, Select, MenuItem, TextField, Button } from '@mui/material';
 import { useParams} from "react-router-dom";
 import { query, where } from "firebase/firestore";
-import { writeBatch, doc, deleteDoc } from "firebase/firestore"; 
+import { writeBatch, doc, deleteDoc, orderBy } from "firebase/firestore"; 
 import "../styling/dashboard.css"
 
 function ClassDashboard() {
@@ -51,7 +51,8 @@ function ClassDashboard() {
 
     const getClass=()=>{
         const displayInfo=[];
-        getDocs(collection(db, "Student"))
+        let studentRef = collection(db, "Student")
+        getDocs(query(studentRef, orderBy('last')))
         .then((allInfo) => {
             allInfo.forEach((doc) =>{
                 if(doc.data().teacher === classTeacher){//TODO: change this once we attach a teacher

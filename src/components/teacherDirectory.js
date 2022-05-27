@@ -6,7 +6,7 @@ import {
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 
-import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where} from 'firebase/firestore'
+import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where, orderBy} from 'firebase/firestore'
 import { db, firebaseConfig } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
 import { Link } from "react-router-dom"
@@ -36,7 +36,8 @@ function TeacherDirectory() {
 
     useEffect(() => {
       const info = []
-      getDocs(collection(db, "Teacher"))
+      let teacherRef = collection(db, "Teacher")
+        getDocs(query(teacherRef, orderBy('last')))
       .then((allInfo) => {
           allInfo.forEach((doc) =>
               info.push({...doc.data()})

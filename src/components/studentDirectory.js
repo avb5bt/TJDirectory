@@ -5,7 +5,7 @@ import {
 } from '@material-ui/pickers';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
-import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where} from 'firebase/firestore'
+import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where, orderBy} from 'firebase/firestore'
 import { db, firebaseConfig } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
 import '../styling/directory.css'
@@ -42,6 +42,19 @@ function StudentDirectory() {
     
 
     
+    useEffect(() => {
+        const info = []
+        let studentRef = collection(db, "Student")
+        getDocs(query(studentRef, orderBy('last')))
+        .then((allInfo) => {
+            allInfo.forEach((doc) =>
+                info.push({...doc.data()})
+            )
+        setInfo(info)
+      })
+      
+    }, [db])
+
 
     const addStudent = (e) => {
       e.preventDefault();
