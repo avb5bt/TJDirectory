@@ -9,6 +9,7 @@ import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where} f
 import { db, firebaseConfig } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
 import '../styling/directory.css'
+import { Link } from "react-router-dom"
 
 
 function StudentDirectory() {
@@ -43,7 +44,7 @@ function StudentDirectory() {
                 info.push({...doc.data()})
             )
         setInfo(info)})
-    }, [db])
+    })
 
     const addStudent = (e) => {
         e.preventDefault();
@@ -279,6 +280,8 @@ function StudentDirectory() {
             </tr>
           </tbody>
         </table>
+        <Button component={Link} to="/edit-student" variant="outlined" color="primary">
+          Edit Student Directory</Button>
       </div>
         
       </div>
