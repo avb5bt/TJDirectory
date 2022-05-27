@@ -127,7 +127,7 @@ function EditStudent() {
             <Button
               type="submit"
               variant="outlined">
-              Add Student
+              Submit Changes
             </Button>
           </form>
         </div>
