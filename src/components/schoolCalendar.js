@@ -125,11 +125,11 @@ function SchoolCalendar() {
             <Button
                 type="submit"
                 variant="outlined">
-                Add Teacher
+                Add Event
             </Button>
             </form>
             
-        <table>
+        <table className='calendarTable'>
           <caption>Calendar</caption>
           <thead>
             <tr>

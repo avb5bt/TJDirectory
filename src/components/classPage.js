@@ -149,11 +149,9 @@ function ClassPage() {
 
     }
 
-
     return (
       <div>
         <h2>Class Page</h2>
-        
         <table>
             <caption>Class Roster</caption>
           <thead>
