@@ -13,6 +13,10 @@ import { Timestamp } from 'firebase/firestore'
 
 import '../styling/calendar.css'
 
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import { Stack } from '@mui/material';
+
 function SchoolCalendar() {
     const [info, setInfo] = useState([])
     const date = useRef(null)
@@ -166,9 +170,12 @@ function SchoolCalendar() {
               </td>
               <td>
               {info.map((event) => (
-                <form onSubmit={(e)=>deleteEvent(e, event)} >
-                    <input id="delete" type="submit" name="delete" value="Delete"/>
-               </form>
+              <Stack direction = 'column' spacing ={1}>
+              <IconButton size='small' onClick={(e) => deleteEvent(e, event)} aria-label="delete">
+              <DeleteIcon />
+            </IconButton>
+            </Stack>
+               
               ))}
               </td> 
             </tr>

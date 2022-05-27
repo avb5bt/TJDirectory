@@ -10,6 +10,9 @@ import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where} f
 import { db, firebaseConfig } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
 import { Link } from "react-router-dom"
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import { Stack } from '@mui/material';
 
 function TeacherDirectory() {
     const [info, setInfo] = useState([])
@@ -196,9 +199,17 @@ function TeacherDirectory() {
               </td>
             <td>
               {info.map((teacher) => (
-                <form onSubmit={(e)=>deleteTeacher(e, teacher)} >
-                    <input id="delete" type="submit" name="delete" value="Delete"/>
-               </form>
+              //   <form onSubmit={(e)=>deleteTeacher(e, teacher)} >
+              //       <input id="delete" type="submit" name="delete" value="Delete"/>
+              //  </form>
+              <Stack direction = 'column' spacing ={1}>
+              <IconButton size='small' onClick={(e) => deleteTeacher(e, teacher)} aria-label="delete">
+              <DeleteIcon />
+            </IconButton>
+            </Stack>
+               
+               
+               
               ))}
               </td> 
             </tr>
