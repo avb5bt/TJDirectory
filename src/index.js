@@ -8,6 +8,8 @@ import TeacherDirectory from './components/teacherDirectory';
 import ClassDashboard from './components/classDashboard';
 import ClassPage from './components/classPage';
 import SchoolCalendar from './components/schoolCalendar';
+import EditTeacher from './components/editTeacher';
+import EditStudent from './components/editStudent';
 
 const rootElement = document.getElementById("root");
 render(
@@ -19,6 +21,8 @@ render(
         <Route path="class-page" element={<ClassPage/>} />
         <Route path="school-calendar" element={<SchoolCalendar/>} />
         <Route path="class-dashboard" element={<ClassDashboard/>} />
+        <Route path="edit-teacher" element={<EditTeacher/>}/>
+        <Route path="edit-student" element={<EditStudent/>}/>
       </Route>
     </Routes>
 </BrowserRouter>, 

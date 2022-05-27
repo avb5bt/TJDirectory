@@ -1,4 +1,4 @@
-import {addDoc, collection, getDocs, deleteDoc} from 'firebase/firestore'
+import { collection, getDocs, deleteDoc } from 'firebase/firestore'
 import { db } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
 import { query, where } from "firebase/firestore";
@@ -55,7 +55,6 @@ function ClassPage() {
 
     const getStudent=async(last)=>{
       // Create a query against the collection.
-      console.log("2a: "+last);
       const studentRef = collection(db, "Student");
 
       const q =query(studentRef, where("last", "==", last));
@@ -115,10 +114,8 @@ function ClassPage() {
     const changeGrade=async(e)=>{
       e.preventDefault();
 
-      console.log("1: "+lastFieldRef.current.value);
       getStudent(lastFieldRef.current.value)
         
-      console.log("2: "+student);
         const batch = writeBatch(db);
         
         const sfRef = await doc(db, "Student", student);
@@ -152,12 +149,10 @@ function ClassPage() {
 
     }
 
-
     return (
       <div>
         <h2>Class Page</h2>
-        
-        <table>
+        <table className='dashboardTable'>
             <caption>Class Roster</caption>
           <thead>
             <tr>
@@ -214,7 +209,7 @@ function ClassPage() {
               </td>
               <td>
               {displayInfo.map((student) => (
-                <Data property={student.score.history} />
+                <Data property={student.score.history ++} />
               ))}
               </td>
               <td>

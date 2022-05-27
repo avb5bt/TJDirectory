@@ -1,18 +1,18 @@
+import { MenuItem, TextField, Select, FormControl, InputLabel, Button} from '@mui/material';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from '@material-ui/pickers';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+
 import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where} from 'firebase/firestore'
 import { db, firebaseConfig } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
-import * as React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-
-function createData(first, last, birth, gender, grade) {
-  return { first, last, birth, gender, grade };
-}
+import { Link } from "react-router-dom"
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import { Stack } from '@mui/material';
 
 function TeacherDirectory() {
     const [info, setInfo] = useState([])
@@ -35,58 +35,39 @@ function TeacherDirectory() {
     }
 
     useEffect(() => {
-        const info = []
-        getDocs(collection(db, "Teacher"))
-        .then((allInfo) => {
-            allInfo.forEach((doc) =>
-                info.push({...doc.data()})
-            )
-        setInfo(info)
-        createRows(info);
-      })
+      const info = []
+      getDocs(collection(db, "Teacher"))
+      .then((allInfo) => {
+          allInfo.forEach((doc) =>
+              info.push({...doc.data()})
+          )
+      setInfo(info)})
     }, [db])
 
-    const createRows = (info)=>{
-      console.log("info2: "+info);
-      let array=[];
-      info.map((student)=>{
-        console.log("attempt: "+student.first);
-        array.push(createData(student.first, student.last, student.birth, student.gender, student.grade));
-      })
-      setRows(array);
-      console.log("ARRAY: "+array);
-    //   [
-    //   createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    //   createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    //   createData('Eclair', 262, 16.0, 24, 6.0),
-    //   createData('Cupcake', 305, 3.7, 67, 4.3),
-    //   createData('Gingerbread', 356, 16.0, 49, 3.9),
-    // ]
-  }
+  
 
     const addTeacher = (e) => {
-        e.preventDefault();
+      e.preventDefault();
+      const newTeacher = {
+          birth: birthFieldRef.current.value,
+          first: firstFieldRef.current.value,
+          last: lastFieldRef.current.value,
+          gender: genderFieldRef.current.value,
+          grade: gradeFieldRef.current.value,
 
-        const newTeacher = {
-            birth: birthFieldRef.current.value,
-            first: firstFieldRef.current.value,
-            last: lastFieldRef.current.value,
-            gender: genderFieldRef.current.value,
-            grade: gradeFieldRef.current.value,
+      } 
+      
+      addDoc(collection(db, "Teacher"), newTeacher)
+      .then((docRef) =>{
+          setInfo([...info, {id:docRef.id, ...newTeacher}])
+      })
+      .catch((e) => console.error(e))
 
-        } 
-        console.log(newTeacher)
-        addDoc(collection(db, "Teacher"), newTeacher)
-        .then((docRef) =>{
-            setInfo([...info, {id:docRef.id, ...newTeacher}])
-        })
-        .catch((e) => console.error(e))
-
-        birthFieldRef.current.value = ""
-        firstFieldRef.current.value = ""
-        lastFieldRef.current.value = ""
-        genderFieldRef.current.value = ""
-        gradeFieldRef.current.value = ""
+      birthFieldRef.current.value = " "
+      firstFieldRef.current.value = " "
+      lastFieldRef.current.value = " "
+      genderFieldRef.current.value = " "
+      gradeFieldRef.current.value = " "
     }
     
     const deleteTeacher = async (e, teacher) => {
@@ -101,75 +82,144 @@ function TeacherDirectory() {
         deleteDoc(doc(db, "Teacher", teacherID))
     }
 
+    const [selectedDate, setSelectedDate] = useState()
+    const handleDateChange=(date) => {
+      setSelectedDate(date)
+    }
+
     return (
-      <div>
-        <h2>Teacher Directory</h2>
+      <div className="directory">
+        <div className="directoryColumn">
+        <h2>New Teacher Form</h2>
         <form onSubmit={addTeacher} >
-            <p>
-                <label>Birthdate </label>
-                <input type="date" ref={birthFieldRef} required/>
-            </p>     
-            <p>
-                <label>First Name </label>
-                <input type="text" ref={firstFieldRef} required/>
+        <p>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                format="MM/dd/yyyy"
+                label="Birthdate"
+                required
+                value={selectedDate}
+                onChange={handleDateChange}
+                inputRef={birthFieldRef}
+                />
+              </MuiPickersUtilsProvider>
             </p>
             <p>
-                <label>Last Name </label>
-                <input type="text" ref={lastFieldRef} required/>
+              <TextField 
+              required
+              variant='outlined'
+              label="First Name"
+              inputRef={firstFieldRef}/>
             </p>
             <p>
-                <label>Gender </label>
-                <select ref={genderFieldRef} required>
-                  <option value="Female">Female</option>
-                  <option value="Male">Male</option>
-                  <option value="Prefer not to say">Prefer not to say</option>
-                </select>
+              <TextField 
+                required
+                variant='outlined'
+                label="Last Name"
+                inputRef={lastFieldRef}/>
             </p>
             <p>
-                <label>Grade Taught </label>
-                <select ref={gradeFieldRef} required>
-                  <option value="1st">1st</option>
-                  <option value="2nd">2nd</option>
-                  <option value="3rd">3rd</option>
-                  <option value="4th">4th</option>
-                  <option value="5th">5th</option>
-                  <option value="6th">6th</option>
-                </select>
+              <FormControl required sx={{ m: 0.5, minWidth: 150 }}>
+                <InputLabel id="test-select-label">Gender</InputLabel>
+                <Select
+                  variant='outlined'
+                  labelId="test-select-label"
+                  label="Label"
+                  inputRef={genderFieldRef}>
+                  <MenuItem value={'Female'}>Female</MenuItem>
+                  <MenuItem value={'Male'}>Male</MenuItem>
+                  <MenuItem value={'Prefer not to say'}>Prefer not to say</MenuItem>
+                </Select>
+              </FormControl>
             </p>
-                <input type="submit"/>
+            <p>
+              <FormControl required sx={{ m: 0.5, minWidth: 150 }}>
+                <InputLabel id="test-select-label">Grade Taught</InputLabel>
+                <Select
+                  variant='outlined'
+                  labelId="test-select-label"
+                  label="Label"
+                  inputRef={gradeFieldRef}>
+                  <MenuItem value={'K'}>Kindergarten</MenuItem>
+                  <MenuItem value={'1st'}>1st</MenuItem>
+                  <MenuItem value={'2nd'}>2nd</MenuItem>
+                  <MenuItem value={'3rd'}>3rd</MenuItem>
+                  <MenuItem value={'4th'}>4th</MenuItem>
+                  <MenuItem value={'5th'}>5th</MenuItem>
+                  <MenuItem value={'6th'}>6th</MenuItem>
+                </Select>
+              </FormControl>
+            </p>
+            <Button
+            type="submit"
+            variant="outlined">
+              Add Teacher
+            </Button>
         </form>
-        <div text-align = 'center'>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow className="header">
-                <TableCell>
-                    First
-                </TableCell>
-                <TableCell align="right">Last</TableCell>
-                <TableCell align="right">Birthday</TableCell>
-                <TableCell align="right">Gender</TableCell>
-                <TableCell align="right">Grade Taught</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow
-                  key={row.first}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.first}
-                  </TableCell>
-                  <TableCell align="right">{row.last}</TableCell>
-                  <TableCell align="right">{row.birth}</TableCell>
-                  <TableCell align="right">{row.gender}</TableCell>
-                  <TableCell align="right">{row.grade}</TableCell>
-                </TableRow>
+      </div>
+
+        <div className="directoryColumn">
+          <h2>Teacher Directory</h2>
+        <table className='directoryTable'>
+          <thead>
+            <tr>
+              <td> </td>
+              <th scope="col">First  </th>
+              <th scope="col">Last  </th>
+              <th scope="col">Birthdate  </th>
+              <th scope="col">Gender  </th>
+              <th scope="col">Grade Taught  </th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"></th>
+              <td>
+              {info.map((teacher) => (
+                <Data property={teacher.first} />
               ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </td>
+              <td>
+              {info.map((teacher) => (
+                <Data property={teacher.last} />
+              ))}
+              </td>
+              <td>
+              {info.map((teacher) => (
+                <Data property={teacher.birth} />
+              ))}
+              </td>
+              <td>
+              {info.map((teacher) => (
+                <Data property={teacher.gender} />
+              ))}
+              </td>
+              <td>
+              {info.map((teacher) => (
+                <Data property={teacher.grade} />
+              ))}
+              </td>
+            <td>
+              {info.map((teacher) => (
+              //   <form onSubmit={(e)=>deleteTeacher(e, teacher)} >
+              //       <input id="delete" type="submit" name="delete" value="Delete"/>
+              //  </form>
+              <Stack direction = 'column' spacing ={1}>
+              <IconButton size='small' onClick={(e) => deleteTeacher(e, teacher)} aria-label="delete">
+              <DeleteIcon />
+            </IconButton>
+            </Stack>
+               
+               
+               
+              ))}
+              </td> 
+            </tr>
+          </tbody>
+        </table>
+        <Button component={Link} to="/edit-teacher" variant="outlined" color="primary">
+          Edit Teacher Directory</Button>
         </div>
       </div>
     );

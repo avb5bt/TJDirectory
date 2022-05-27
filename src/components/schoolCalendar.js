@@ -1,3 +1,11 @@
+import { MenuItem, TextField, Select, FormControl, InputLabel, Button} from '@mui/material';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from '@material-ui/pickers';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+
 import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where} from 'firebase/firestore'
 import { db } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
@@ -12,9 +20,13 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 
-function createData(date, event, description, staff) {
-  return {date, event, description, staff};
-}
+
+
+import '../styling/calendar.css'
+
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import { Stack } from '@mui/material';
 
 function SchoolCalendar() {
     const [info, setInfo] = useState([])
@@ -28,13 +40,10 @@ function SchoolCalendar() {
     const Data=(props) => {
         return (
             <div className='CalendarEvent'>
-            
                 <td>{props.property}</td>
-                
             </div>
         )
     }
-
 
     useEffect(() => {
         const info = []
@@ -46,29 +55,12 @@ function SchoolCalendar() {
             info.sort((a, b) => {
                 return a.date.seconds - b.date.seconds
             })
-            setInfo(info)
-            createRows(info);
+            setInfo(info);
         
         })}, [db])
 
 
-    const createRows = (info)=>{
-      console.log("info2: "+info);
-      let array=[];
-      info.map((event)=>{
-        array.push(createData(new Date(event.date.seconds * 1000).toDateString(), event.event, 
-        event.descrip, event.staff));
-      })
-      setRows(array);
-      console.log("ARRAY: "+array);
-    //   [
-    //   createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    //   createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    //   createData('Eclair', 262, 16.0, 24, 6.0),
-    //   createData('Cupcake', 305, 3.7, 67, 4.3),
-    //   createData('Gingerbread', 356, 16.0, 49, 3.9),
-    // ]
-  }
+    
     const addEvent = (e) => {
         e.preventDefault();
 
@@ -104,59 +96,105 @@ function SchoolCalendar() {
           setCalendarID(doc.id);
       });
       deleteDoc(doc(db, "Events", calendarID))
-  }
+    }
+
+    const [selectedDate, setSelectedDate] = useState()
+    const handleDateChange=(date) => {
+        setSelectedDate(date)
+    }
+
     return (
         <div>
         <h2>School Calendar</h2>
         <form onSubmit={addEvent} >
             <p>
-                <label>Date </label>
-                <input type="date" ref={date} />
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                format="MM/dd/yyyy"
+                label="Birthdate"
+                required
+                value={selectedDate}
+                onChange={handleDateChange}
+                inputRef={date}
+                />
+              </MuiPickersUtilsProvider>
             </p>
             <p>
-                <label>Event </label>
-                <input type="text" ref={event} />
+              <TextField 
+              required
+              variant='outlined'
+              label="Event"
+              inputRef={event}/>
             </p>
             <p>
-                <label>Description </label>
-                <input type="text" ref={desc} /></p>
-            <p>
-                <label>Staff </label>
-                <input type="text" ref={staff} />
+              <TextField 
+                required
+                variant='outlined'
+                label="Description"
+                inputRef={desc}/>
             </p>
+            <p>
+              <TextField 
+              required
+              variant='outlined'
+              label="Staff"
+              inputRef={staff}/>
+            </p>
+            <Button
+                type="submit"
+                variant="outlined">
+                Add Event
+            </Button>
+            </form>
             
-            <input type="submit"/>
-        </form>
-
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow className="header">
-                <TableCell>
-                    Date
-                </TableCell>
-                <TableCell align="right">Event</TableCell>
-                <TableCell align="right">Description</TableCell>
-                <TableCell align="right">Staff</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow
-                  key={row.first}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.date}
-                  </TableCell>
-                  <TableCell align="right">{row.event}</TableCell>
-                  <TableCell align="right">{row.description}</TableCell>
-                  <TableCell align="right">{row.staff}</TableCell>
-                </TableRow>
+        <table className='calendarTable'>
+          <caption>Calendar</caption>
+          <thead>
+            <tr>
+              <td> </td>
+              <th scope="col">Date</th>
+              <th scope='col'>Event</th>
+              <th scope="col">Description</th>
+              <th scope="col">Staff</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"></th>
+              <td>
+              {info.map((event) => (
+                <Data property={new Date(event.date.seconds * 1000).toDateString()} />
               ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </td>
+              <td>
+              {info.map((event) => (
+                <Data property={event.event} />
+              ))}
+              </td>
+              <td>
+              {info.map((event) => (
+                <Data property={event.descrip} />
+              ))}
+              </td>
+              <td>
+              {info.map((event) => (
+                <Data property={event.staff} />
+              ))}
+              </td>
+              <td>
+              {info.map((event) => (
+              <Stack direction = 'column' spacing ={1}>
+              <IconButton size='small' onClick={(e) => deleteEvent(e, event)} aria-label="delete">
+              <DeleteIcon />
+            </IconButton>
+            </Stack>
+               
+              ))}
+              </td> 
+            </tr>
+          </tbody>
+        </table>
         </div>
     )
 }
