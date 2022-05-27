@@ -84,7 +84,7 @@ function TeacherDirectory() {
     return (
       <div className="directory">
         <div className="directoryColumn">
-        <h2>Teacher Directory</h2>
+        <h2>New Teacher Form</h2>
         <form onSubmit={addTeacher} >
         <p>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -153,7 +153,8 @@ function TeacherDirectory() {
       </div>
 
         <div className="directoryColumn">
-        <table>
+          <h2>Teacher Directory</h2>
+        <table className='directoryTable'>
           <thead>
             <tr>
               <td> </td>

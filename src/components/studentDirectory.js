@@ -115,7 +115,7 @@ function StudentDirectory() {
     return (
       <div className="directory">
         <div className="directoryColumn">
-          <h2>Student Directory</h2>
+          <h2>New Student Form</h2>
           <form onSubmit={addStudent}>
             <p>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -209,9 +209,9 @@ function StudentDirectory() {
                   inputRef={teacherFieldRef}>
 
                   {classes.map((classes) => (
-                    <MenuItem value = {classes.teacher} onClick = { () => {
-                        setclassTeacher(classes.teacher)
-                    }}> {classes.teacher} </MenuItem>))}
+                    <MenuItem value = {classes.Teacher} onClick = { () => {
+                        setclassTeacher(classes.Teacher)
+                    }}> {classes.Teacher} </MenuItem>))}
                 </Select>
               </FormControl>
             </p>
@@ -224,7 +224,8 @@ function StudentDirectory() {
       </div>
 
       <div className='directoryColumn'>
-      <table>
+        <h2>Student Directory</h2>
+      <table className="directoryTable">
           <thead>
             <tr>
               <td> </td>
