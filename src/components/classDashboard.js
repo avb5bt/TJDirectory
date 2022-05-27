@@ -2,9 +2,8 @@
 import {collection, getDocs} from 'firebase/firestore'
 import { db } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
-import {  FormControl, InputLabel, Select } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, TextField, Button } from '@mui/material';
 import { useParams} from "react-router-dom";
-import { MenuItem } from '@mui/material';
 import { query, where } from "firebase/firestore";
 import { writeBatch, doc, deleteDoc } from "firebase/firestore"; 
 
@@ -13,8 +12,6 @@ function ClassDashboard() {
     const {id} = useParams()
     const [classTeacher, setclassTeacher] = useState('')
     const classTeacherRef = useRef('')
-
-    
 
     useEffect(() => {
         const classes = []
@@ -168,7 +165,6 @@ function ClassDashboard() {
   
       }
   
-
     return (
         <div>
         <h2>Class Dashboard</h2>
@@ -273,26 +269,46 @@ function ClassDashboard() {
         </table>
         <form onSubmit={changeGrade} >
             <p>
-                <label>Last Name </label>
-                <input type="text" ref={lastFieldRef} />
+              <TextField 
+                required
+                variant='outlined'
+                label="Last Name"
+                inputRef={lastFieldRef}/>
             </p>
             <p>
-                <label>Math Grade</label>
-                <input type="text" ref={mathGradeRef} />
+              <TextField 
+                required
+                variant='outlined'
+                label="Math Grade"
+                inputRef={mathGradeRef}/>
             </p>
             <p>
-                <label>Science Grade </label>
-                <input type="text" ref={scienceGradeRef} />
+              <TextField 
+                required
+                variant='outlined'
+                label="Science Grade"
+                inputRef={scienceGradeRef}/>
             </p>
             <p>
-                <label>History Grade</label>
-                <input type="text" ref={historyGradeRef} />
+              <TextField 
+                required
+                variant='outlined'
+                label="History Grade"
+                inputRef={historyGradeRef}/>
             </p>
             <p>
-                <label>English Grade </label>
-                <input type="text" ref={englishGradeRef} />
+              <TextField 
+                required
+                variant='outlined'
+                label="English Grade"
+                inputRef={englishGradeRef}/>
             </p>
-                <input type="submit"/>
+            <Button
+            type="submit"
+            variant="outlined"
+            >
+              Submit
+            </Button>
         </form>
         <table>
             <caption>Class Grade Averages
