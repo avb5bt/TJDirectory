@@ -237,7 +237,7 @@ function StudentDirectory() {
               <th scope="col">Last</th>
               <th scope="col">Birthdate</th>
               <th scope="col">Gender</th>
-              <th scope="col">Grade Level</th>
+              <th scope="col">Grade</th>
               <th scope="col">Teacher</th>
               <th scope="col"></th>
             </tr>
