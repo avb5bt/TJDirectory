@@ -1,8 +1,16 @@
+import { MenuItem, TextField, Select, FormControl, InputLabel, Button} from '@mui/material';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from '@material-ui/pickers';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
 import { collection, getDocs } from 'firebase/firestore'
 import { db } from './firebaseSetup'
 import { useState, useRef} from "react"
 import { query, where } from "firebase/firestore";
 import { writeBatch, doc } from "firebase/firestore"; 
+
 function EditStudent() {
     const birthFieldRef = useRef(null);
     const firstFieldRef = useRef(null);
@@ -23,6 +31,7 @@ function EditStudent() {
            setStudent(doc.id);
         });
       }
+
     const changeStudent=async(e)=>{
         e.preventDefault();
   
@@ -46,44 +55,81 @@ function EditStudent() {
           firstFieldRef.current.value="";
           genderFieldRef.current.value="";
           gradeFieldRef.current.value="";
-      }
+    }
+    
+    const [selectedDate, setSelectedDate] = useState()
+    const handleDateChange=(date) => {
+      setSelectedDate(date)
+    }
+
     return (
         <div>
         <h2>Edit Student Directory</h2>
         <form onSubmit={changeStudent} >
             <p>
-                <label>Last Name </label>
-                <input type="text" ref={lastFieldRef} required/>
+              <TextField 
+              required
+              variant='outlined'
+              label="First Name"
+              inputRef={firstFieldRef}/>
             </p>
             <p>
-                <label>First Name </label>
-                <input type="text" ref={firstFieldRef} required/>
+              <TextField 
+                required
+                variant='outlined'
+                label="Last Name"
+                inputRef={lastFieldRef}/>
+            </p>    
+            <p>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                format="MM/dd/yyyy"
+                label="Birthdate"
+                required
+                value={selectedDate}
+                onChange={handleDateChange}
+                inputRef={birthFieldRef}
+                />
+              </MuiPickersUtilsProvider>
             </p>
             <p>
-                <label>Birthdate </label>
-                <input type="date" ref={birthFieldRef} required/>
-            </p>     
-            <p>
-                <label>Gender </label>
-                <select ref={genderFieldRef} required>
-                  <option value="Female">Female</option>
-                  <option value="Male">Male</option>
-                  <option value="Prefer not to say">Prefer not to say</option>
-                </select>
+              <FormControl required sx={{ m: 0.5, minWidth: 150 }}>
+                <InputLabel id="test-select-label">Gender</InputLabel>
+                <Select
+                  variant='outlined'
+                  labelId="test-select-label"
+                  label="Label"
+                  inputRef={genderFieldRef}>
+                  <MenuItem value={'Female'}>Female</MenuItem>
+                  <MenuItem value={'Male'}>Male</MenuItem>
+                  <MenuItem value={'Prefer not to say'}>Prefer not to say</MenuItem>
+                </Select>
+              </FormControl>
             </p>
             <p>
-                <label>Grade Taught </label>
-                <select ref={gradeFieldRef} required>
-                  <option value="1st">1st</option>
-                  <option value="2nd">2nd</option>
-                  <option value="3rd">3rd</option>
-                  <option value="4th">4th</option>
-                  <option value="5th">5th</option>
-                  <option value="6th">6th</option>
-                </select>
+              <FormControl required sx={{ m: 0.5, minWidth: 150 }}>
+                <InputLabel id="test-select-label">Grade Level</InputLabel>
+                <Select
+                  variant='outlined'
+                  labelId="test-select-label"
+                  label="Label"
+                  inputRef={gradeFieldRef}>
+                  <MenuItem value={'K'}>Kindergarten</MenuItem>
+                  <MenuItem value={'1st'}>1st</MenuItem>
+                  <MenuItem value={'2nd'}>2nd</MenuItem>
+                  <MenuItem value={'3rd'}>3rd</MenuItem>
+                  <MenuItem value={'4th'}>4th</MenuItem>
+                  <MenuItem value={'5th'}>5th</MenuItem>
+                  <MenuItem value={'6th'}>6th</MenuItem>
+                </Select>
+              </FormControl>
             </p>
-                <input type="submit"/>
-        </form>
+            <Button
+              type="submit"
+              variant="outlined">
+              Add Student
+            </Button>
+          </form>
         </div>
     )
 }

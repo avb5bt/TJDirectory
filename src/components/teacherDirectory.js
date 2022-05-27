@@ -9,6 +9,7 @@ import {addDoc, writeBatch, deleteDoc, collection, doc, getDocs, query, where} f
 import { db, firebaseConfig } from './firebaseSetup'
 import { useState, useEffect, useRef} from "react"
 import { Link } from "react-router-dom"
+
 function TeacherDirectory() {
     const [info, setInfo] = useState([])
     const birthFieldRef = useRef(null);
@@ -28,38 +29,38 @@ function TeacherDirectory() {
     }
 
     useEffect(() => {
-        const info = []
-        getDocs(collection(db, "Teacher"))
-        .then((allInfo) => {
-            allInfo.forEach((doc) =>
-                info.push({...doc.data()})
-            )
-        setInfo(info)})
-    })
+      const info = []
+      getDocs(collection(db, "Teacher"))
+      .then((allInfo) => {
+          allInfo.forEach((doc) =>
+              info.push({...doc.data()})
+          )
+      setInfo(info)})
+    }, [db])
 
     const addTeacher = (e) => {
-        e.preventDefault();
+      e.preventDefault();
 
-        const newTeacher = {
-            birth: birthFieldRef.current.value,
-            first: firstFieldRef.current.value,
-            last: lastFieldRef.current.value,
-            gender: genderFieldRef.current.value,
-            grade: gradeFieldRef.current.value,
+      const newTeacher = {
+          birth: birthFieldRef.current.value,
+          first: firstFieldRef.current.value,
+          last: lastFieldRef.current.value,
+          gender: genderFieldRef.current.value,
+          grade: gradeFieldRef.current.value,
 
-        } 
-        
-        addDoc(collection(db, "Teacher"), newTeacher)
-        .then((docRef) =>{
-            setInfo([...info, {id:docRef.id, ...newTeacher}])
-        })
-        .catch((e) => console.error(e))
+      } 
+      
+      addDoc(collection(db, "Teacher"), newTeacher)
+      .then((docRef) =>{
+          setInfo([...info, {id:docRef.id, ...newTeacher}])
+      })
+      .catch((e) => console.error(e))
 
-        birthFieldRef.current.value = ""
-        firstFieldRef.current.value = ""
-        lastFieldRef.current.value = ""
-        genderFieldRef.current.value = ""
-        gradeFieldRef.current.value = ""
+      birthFieldRef.current.value = ""
+      firstFieldRef.current.value = ""
+      lastFieldRef.current.value = ""
+      genderFieldRef.current.value = ""
+      gradeFieldRef.current.value = ""
     }
     
     const deleteTeacher = async (e, teacher) => {
@@ -148,7 +149,7 @@ function TeacherDirectory() {
               Add Teacher
             </Button>
         </form>
-</div>
+      </div>
 
         <div className="directoryColumn">
         <table>
