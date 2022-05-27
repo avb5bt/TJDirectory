@@ -44,7 +44,7 @@ function StudentDirectory() {
                 info.push({...doc.data()})
             )
         setInfo(info)})
-    })
+    }, [db])
 
     const addStudent = (e) => {
         e.preventDefault();
@@ -100,16 +100,16 @@ function StudentDirectory() {
         deleteDoc(doc(db, "Student", studentID))
     }
 
-      useEffect(() => {
-          const classes = []
-          getDocs(collection(db, "Classes"))
-          .then((allInfo) => {
-              allInfo.forEach((doc) =>
-                  classes.push({...doc.data()})
-              )
-          setClasses(classes)
-          console.log(classes)})
-      }, [db])
+    useEffect(() => {
+        const classes = []
+        getDocs(collection(db, "Classes"))
+        .then((allInfo) => {
+            allInfo.forEach((doc) =>
+                classes.push({...doc.data()})
+            )
+        setClasses(classes)
+        console.log(classes)})
+    }, [db])
   
     
     return (

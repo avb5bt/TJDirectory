@@ -11,6 +11,7 @@ table {
     border: 1px solid;
     margin: 30px;
     border-radius: 10px;
+    border-collapse: collapse;
 }
 
 
