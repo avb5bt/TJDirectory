@@ -10,7 +10,6 @@ import "../styling/dashboard.css"
 
 function ClassDashboard() {
     const [classes, setClasses] = useState([])
-    const {id} = useParams()
     let classTeacher = ''
     const classTeacherRef = useRef('')
 
@@ -33,7 +32,6 @@ function ClassDashboard() {
     const historyGradeRef = useRef(null);
     const englishGradeRef = useRef(null);
     const [student, setStudent]=useState();
-    const [studentID, setStudentID]=useState();
     const [avgMath, setAvgMath] = useState(0);
     const [avgEng, setAvgEng] = useState(0);
     const [avgHist, setAvgHist] = useState(0);
@@ -85,6 +83,7 @@ function ClassDashboard() {
            setStudent(doc.id);
         });
       }
+
       const averageMath = async()=>{
         let sum = 0;
         let counter = 0;
@@ -97,6 +96,7 @@ function ClassDashboard() {
         setAvgMath(parseInt(sum/counter))
   
       }
+
       const averageEng = async()=>{
         let sum = 0;
         let counter = 0;
@@ -108,6 +108,7 @@ function ClassDashboard() {
         setAvgEng(parseInt(sum/counter))
   
       }
+
       const averageHist = async()=>{
         let sum = 0;
         let counter = 0;
@@ -119,6 +120,7 @@ function ClassDashboard() {
         setAvgHist(parseInt(sum/counter))
   
       }
+
       const averageSci = async()=>{
         let sum = 0;
         let counter = 0;
@@ -126,9 +128,7 @@ function ClassDashboard() {
           sum += student.score.science;
           counter++;
         })
-        
         setAvgSci(parseInt(sum/counter))
-  
       }
 
       const changeGrade=async(e)=>{
@@ -157,22 +157,9 @@ function ClassDashboard() {
           historyGradeRef.current.value="";
           scienceGradeRef.current.value="";
       }
-      
-      const deleteStudent = async (e, student) => {
-        e.preventDefault();
-        const studentRef = collection(db, "Student");
-        const q = query(studentRef, where("last", "==", student.last));
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-            doc.data();
-            setStudentID(doc.id);
-        });
-        deleteDoc(doc(db, "Student", studentID))
-  
-      }
   
     return (
-        <div>
+        <div className='classDashboard'>
         <h2>Class Dashboard</h2>
             <p>
             <FormControl required sx = {{m: 0.5, minWidth: 150}}>
@@ -194,7 +181,6 @@ function ClassDashboard() {
             </p>
 
             <div>
-        <h2>Class Page</h2>
         <table className="rosterTable">
             <caption>Class Roster</caption>
           <thead>
@@ -204,7 +190,7 @@ function ClassDashboard() {
               <th scope="col">Last</th>
               <th scope="col">Birthdate</th>
               <th scope="col">Gender</th>
-              <th scope="col">Grade Level</th>
+              <th scope="col">Grade</th>
               <th scope="col">Math</th>
               <th scope="col">English</th>
               <th scope="col">History</th>
@@ -258,13 +244,6 @@ function ClassDashboard() {
               <td>
               {displayInfo.map((student) => (
                 <Data property={student.score.english} />
-              ))}
-              </td>
-              <td>
-              {displayInfo.map((student) => (
-                <form onSubmit={(e)=>deleteStudent(e, student)} >
-                    <input id="delete" type="submit" name="delete" value="Delete"/>
-               </form>
               ))}
               </td> 
             </tr>
