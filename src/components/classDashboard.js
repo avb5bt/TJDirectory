@@ -10,7 +10,7 @@ import { writeBatch, doc, deleteDoc } from "firebase/firestore";
 function ClassDashboard() {
     const [classes, setClasses] = useState([])
     const {id} = useParams()
-    const [classTeacher, setclassTeacher] = useState('')
+    let classTeacher = ''
     const classTeacherRef = useRef('')
 
     useEffect(() => {
@@ -60,11 +60,15 @@ function ClassDashboard() {
                 
             })
         setDisplayInfo(displayInfo)})
-            averageMath();
-            averageEng();
-            averageHist();
-            averageSci();
+
     }
+
+    useEffect(() => {
+      averageMath();
+      averageEng();
+      averageHist();
+      averageSci();
+    })
 
     const getStudent=async(last)=>{
         // Create a query against the collection.
@@ -176,7 +180,7 @@ function ClassDashboard() {
                 >
             {classes.map((classes) => (
                 <MenuItem value = {classes.last} onClick = { () => {
-                    setclassTeacher(classes.last)
+                    classTeacher = classes.last
                     getClass()
                 }}> {classes.last} </MenuItem>
               ))} 
