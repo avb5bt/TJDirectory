@@ -45,7 +45,6 @@ function TeacherDirectory() {
 
     const addTeacher = (e) => {
       e.preventDefault();
-
       const newTeacher = {
           birth: birthFieldRef.current.value,
           first: firstFieldRef.current.value,
@@ -61,12 +60,11 @@ function TeacherDirectory() {
       })
       .catch((e) => console.error(e))
 
-      birthFieldRef.current.value = ""
-      firstFieldRef.current.value = ""
-      lastFieldRef.current.value = ""
-      genderFieldRef.current.value = ""
-      gradeFieldRef.current.value = ""
-      window.location.reload(false)
+      birthFieldRef.current.value = " "
+      firstFieldRef.current.value = " "
+      lastFieldRef.current.value = " "
+      genderFieldRef.current.value = " "
+      gradeFieldRef.current.value = " "
     }
     
     const deleteTeacher = async (e, teacher) => {
