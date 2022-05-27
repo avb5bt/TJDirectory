@@ -3,7 +3,10 @@
     margin: auto;
     background-color: rgb(149, 202, 218, 0.5);
     border-radius: 20px;
-    padding: 10px;
+}
+
+.classDashboard h1 {
+    padding-top: 20px;
 }
 
 .rosterTable {
@@ -22,6 +25,10 @@
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: large;
     padding: 10px;
+}
+
+form {
+    padding-bottom: 20px;
 }
 
 caption {

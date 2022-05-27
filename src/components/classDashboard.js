@@ -160,7 +160,7 @@ function ClassDashboard() {
   
     return (
         <div className='classDashboard'>
-        <h2>Class Dashboard</h2>
+        <h1>Class Dashboard</h1>
             <p>
             <FormControl required sx = {{m: 0.5, minWidth: 150}}>
                 <InputLabel id="test-select-label"> Class Teacher</InputLabel>
@@ -249,6 +249,39 @@ function ClassDashboard() {
             </tr>
           </tbody>
         </table>
+
+        <table className='gradesTable'>
+            <caption>Class Grade Averages
+            </caption>
+        <thead>
+            <tr>
+              <td> </td>
+              <th scope="col">Math</th>
+              <th scope="col">English</th>
+              <th scope="col">History</th>
+              <th scope="col">Science</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"></th>
+              <td>
+              {avgMath}
+              </td>
+              <td>
+              {avgEng}
+              </td>
+              <td>
+              {avgHist}
+              </td>
+              <td>
+              {avgSci}
+              </td>
+              </tr>
+          </tbody>
+        </table>
+        
         <form onSubmit={changeGrade} >
           <h2>Enter Grades</h2>
             <p>
@@ -293,37 +326,7 @@ function ClassDashboard() {
               Submit Grades
             </Button>
         </form>
-        <table className='gradesTable'>
-            <caption>Class Grade Averages
-            </caption>
-        <thead>
-            <tr>
-              <td> </td>
-              <th scope="col">Math</th>
-              <th scope="col">English</th>
-              <th scope="col">History</th>
-              <th scope="col">Science</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row"></th>
-              <td>
-              {avgMath}
-              </td>
-              <td>
-              {avgEng}
-              </td>
-              <td>
-              {avgHist}
-              </td>
-              <td>
-              {avgSci}
-              </td>
-              </tr>
-          </tbody>
-        </table>
+       
       </div>
           </div>
     )

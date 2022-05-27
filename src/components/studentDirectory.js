@@ -14,7 +14,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import { Stack } from '@mui/material';
 
-
 function StudentDirectory() {
     const [info, setInfo] = useState([])
     const birthFieldRef = useRef(null);
@@ -39,9 +38,6 @@ function StudentDirectory() {
         )
     }
 
-    
-
-    
     useEffect(() => {
         const info = []
         let studentRef = collection(db, "Student")
@@ -98,7 +94,6 @@ function StudentDirectory() {
             setStudentID(doc.id);
         });
         deleteDoc(doc(db, "Student", studentID))
-        window.location.reload(false)
     }
 
     useEffect(() => {
@@ -111,7 +106,6 @@ function StudentDirectory() {
         setClasses(classes)
         })
     }, [db])
-  
     
     return (
       <div className="directory">
@@ -274,9 +268,6 @@ function StudentDirectory() {
               </td>
               <td>
               {info.map((student) => (
-              //   <form onSubmit={(e)=>deleteStudent(e, student)} >
-              //       <input id="delete" type="submit" name="delete" value="Delete"/>
-              //  </form>
               <Stack direction = 'column' spacing ={1}>
               <IconButton size='small' onClick={(e) => deleteStudent(e, student)} aria-label="delete">
               <DeleteIcon />

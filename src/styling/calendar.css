@@ -3,7 +3,15 @@
     margin: auto;
     background-color: rgb(149, 202, 218, 0.5);
     border-radius: 20px;
-    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.schoolCalendar h1 {
+    padding-top: 20px;
+}
+
+.eventForm {
+    margin-bottom: 20px;
 }
 
 .calendarTable {
