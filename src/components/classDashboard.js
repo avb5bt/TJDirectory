@@ -11,8 +11,10 @@ import { writeBatch, doc, deleteDoc } from "firebase/firestore";
 function ClassDashboard() {
     const [classes, setClasses] = useState([])
     const {id} = useParams()
-    const [classTeacher, setclassTeacher] = useState('')
+    //const [classTeacher, setclassTeacher] = useState('')
+    let classTeacher = ''
     const classTeacherRef = useRef('')
+    
 
     
 
@@ -24,7 +26,7 @@ function ClassDashboard() {
                 classes.push({...doc.data()})
             )
         setClasses(classes)
-        console.log(classes)})
+        })
     }, [db])
 
 
@@ -40,6 +42,7 @@ function ClassDashboard() {
     const [avgEng, setAvgEng] = useState(0);
     const [avgHist, setAvgHist] = useState(0);
     const [avgSci, setAvgSci] = useState(0);
+    let info = []
 
     const Data=(props) => {
         return (
@@ -52,26 +55,29 @@ function ClassDashboard() {
     }
 
     const getClass=()=>{
-        const displayInfo=[];
+        const isplayInfo=[];
         getDocs(collection(db, "Student"))
         .then((allInfo) => {
             allInfo.forEach((doc) =>{
                 if(doc.data().teacher === classTeacher){//TODO: change this once we attach a teacher
                     //console.log("entered");
-                    displayInfo.push({...doc.data()})
+                    isplayInfo.push({...doc.data()})
                 }
                 
             })
-        setDisplayInfo(displayInfo)})
-            averageMath();
-            averageEng();
-            averageHist();
-            averageSci();
+        setDisplayInfo(isplayInfo)
+      })
     }
+
+    useEffect(() => {
+      averageMath();
+      averageEng();
+      averageHist();
+      averageSci();
+    }, [displayInfo])
 
     const getStudent=async(last)=>{
         // Create a query against the collection.
-        console.log("2a: "+last);
         const studentRef = collection(db, "Student");
   
         const q =query(studentRef, where("last", "==", last));
@@ -86,11 +92,9 @@ function ClassDashboard() {
         let sum = 0;
         let counter = 0;
         displayInfo.map((student) => {
-          console.log(student.score.math)
           sum += student.score.math;
           counter++;
         })
-        
         setAvgMath(parseInt(sum/counter))
   
       }
@@ -171,7 +175,6 @@ function ClassDashboard() {
 
     return (
         <div>
-        <h2>Class Dashboard</h2>
             <p>
             <FormControl required sx = {{m: 0.5, minWidth: 150}}>
                 <InputLabel> Class Teacher</InputLabel>
@@ -180,7 +183,7 @@ function ClassDashboard() {
                 >
             {classes.map((classes) => (
                 <MenuItem value = {classes.last} onClick = { () => {
-                    setclassTeacher(classes.last)
+                  classTeacher = classes.last
                     getClass()
 
 
