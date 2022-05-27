@@ -1,3 +1,11 @@
+.schoolCalendar {
+    display: block;
+    margin: auto;
+    background-color: rgb(149, 202, 218, 0.5);
+    border-radius: 20px;
+    padding: 10px;
+}
+
 .calendarTable {
     margin: auto;
     text-align: center;
