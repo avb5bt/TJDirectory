@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: azure;
 }
 
 
@@ -15,18 +16,23 @@
   padding: 30px;
   background-color: rgb(255, 255, 255);
 }
+
 .App{
   padding: 25px;
 }
+
 .navbar{
   padding: 15px;
 }
+
 .container{
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   background-color: rgb(149, 202, 218);
+  border-radius: 20px;
 }
+
 .nav{
   margin-right: 100px;
 }

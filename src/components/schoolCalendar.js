@@ -1,4 +1,4 @@
-import { MenuItem, TextField, Select, FormControl, InputLabel, Button} from '@mui/material';
+import { TextField, Button } from '@mui/material';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
@@ -90,7 +90,7 @@ function SchoolCalendar() {
     }
 
     return (
-        <div>
+        <div className='schoolCalendar'>
         <h2>School Calendar</h2>
         <form onSubmit={addEvent} >
             <p>
