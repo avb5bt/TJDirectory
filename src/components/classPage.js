@@ -152,7 +152,7 @@ function ClassPage() {
     return (
       <div>
         <h2>Class Page</h2>
-        <table>
+        <table className='dashboardTable'>
             <caption>Class Roster</caption>
           <thead>
             <tr>

@@ -19,6 +19,7 @@ function TeacherDirectory() {
     const genderFieldRef = useRef(null);
     const gradeFieldRef = useRef(null);
     const [teacherID, setTeacherID]=useState();
+
     const Data=(props) => {
         return (
             <div className='teacherDirectory'>
@@ -62,6 +63,7 @@ function TeacherDirectory() {
       lastFieldRef.current.value = ""
       genderFieldRef.current.value = ""
       gradeFieldRef.current.value = ""
+      window.location.reload(false)
     }
     
     const deleteTeacher = async (e, teacher) => {
