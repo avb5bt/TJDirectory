@@ -102,13 +102,13 @@ function StudentDirectory() {
 
     useEffect(() => {
         const classes = []
-        getDocs(collection(db, "Classes"))
+        getDocs(collection(db, "Teacher"))
         .then((allInfo) => {
             allInfo.forEach((doc) =>
                 classes.push({...doc.data()})
             )
         setClasses(classes)
-        console.log(classes)})
+        })
     }, [db])
   
     
@@ -209,9 +209,9 @@ function StudentDirectory() {
                   inputRef={teacherFieldRef}>
 
                   {classes.map((classes) => (
-                    <MenuItem value = {classes.Teacher} onClick = { () => {
-                        setclassTeacher(classes.Teacher)
-                    }}> {classes.Teacher} </MenuItem>))}
+                    <MenuItem value = {classes.last} onClick = { () => {
+                        setclassTeacher(classes.last)
+                    }}> {classes.last} </MenuItem>))}
                 </Select>
               </FormControl>
             </p>
