@@ -33,7 +33,6 @@ function SchoolCalendar() {
                 return a.date.seconds - b.date.seconds
             })
             setInfo(info)
-            console.log('update')
         
         })}, [db])
 
