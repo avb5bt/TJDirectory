@@ -6,6 +6,7 @@ import { FormControl, InputLabel, Select, MenuItem, TextField, Button } from '@m
 import { useParams} from "react-router-dom";
 import { query, where } from "firebase/firestore";
 import { writeBatch, doc, deleteDoc } from "firebase/firestore"; 
+import "../styling/dashboard.css"
 
 function ClassDashboard() {
     const [classes, setClasses] = useState([])
@@ -174,8 +175,11 @@ function ClassDashboard() {
         <h2>Class Dashboard</h2>
             <p>
             <FormControl required sx = {{m: 0.5, minWidth: 150}}>
-                <InputLabel> Class Teacher</InputLabel>
+                <InputLabel id="test-select-label"> Class Teacher</InputLabel>
                 <Select
+                variant="outlined"
+                labelId='test-select-label'
+                label="Label"
                 ref = {classTeacherRef}
                 >
             {classes.map((classes) => (
@@ -266,6 +270,7 @@ function ClassDashboard() {
           </tbody>
         </table>
         <form onSubmit={changeGrade} >
+          <h2>Enter Grades</h2>
             <p>
               <TextField 
                 required
@@ -305,10 +310,10 @@ function ClassDashboard() {
             type="submit"
             variant="outlined"
             >
-              Submit
+              Submit Grades
             </Button>
         </form>
-        <table>
+        <table className='gradesTable'>
             <caption>Class Grade Averages
             </caption>
         <thead>
