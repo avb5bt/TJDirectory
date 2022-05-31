@@ -24,11 +24,16 @@ function ClassDashboard() {
         console.log(classes)})
     }, [db])
 
-
-    const [displayInfo, setDisplayInfo]=useState([]);
-    const lastFieldRef = useRef(null);
-    const mathGradeRef = useRef(null);
-    const scienceGradeRef = useRef(null);
+/*
+Consider grouping const definitions together by using a "," and removing the const of the next variable.
+*/
+/*
+I'm not in love with this use of refs. Refs in practice are not used very often. This ref could be a useState.
+*/
+    const [displayInfo, setDisplayInfo]=useState([]),
+          lastFieldRef = useRef(null),
+          mathGradeRef = useRef(null),
+          scienceGradeRef = useRef(null);
     const historyGradeRef = useRef(null);
     const englishGradeRef = useRef(null);
     const [student, setStudent]=useState();
@@ -84,6 +89,7 @@ function ClassDashboard() {
         });
       }
 
+//What was the reasoning for using async here?
       const averageMath = async()=>{
         let sum = 0;
         let counter = 0;
@@ -97,6 +103,9 @@ function ClassDashboard() {
   
       }
 
+      //Avoid writing code that has while loop vibes.
+      //Look into calculating sum using sumBy in the lodash package.
+      //Lodash offers many functions that simplify common javascript logic.
       const averageEng = async()=>{
         let sum = 0;
         let counter = 0;
@@ -181,6 +190,8 @@ function ClassDashboard() {
             </p>
 
             <div>
+       {/*Consider using an MUI table because it provides many baked in features for sorting/filtering.
+       It will also make your code cleaner.*/}
         <table className="rosterTable">
             <caption>Class Roster</caption>
           <thead>
